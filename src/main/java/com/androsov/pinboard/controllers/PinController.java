@@ -17,12 +17,12 @@ public class PinController {
 
     @GetMapping("/pins")
     String getAllPins() {
-        String allPins = "";
+        StringBuilder allPins = new StringBuilder();
 
         for (Pin pin : repository.findAll()){
-            allPins += pin.toString() + "\n";
+            allPins.append(pin.toString()).append("\n");
         }
 
-        return allPins;
+        return allPins.toString();
     }
 }
