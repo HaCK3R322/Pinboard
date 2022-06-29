@@ -7,9 +7,10 @@ import java.sql.Date;
 @Table(name = "pins")
 public class Pin {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
     private String group_name;
+    private String description;
     private String color;
     private String author;
     private Date date_creation;
@@ -22,6 +23,7 @@ public class Pin {
 
     public Pin(Integer id,
                String group_name,
+               String text,
                String color,
                String author,
                Date date_creation,
@@ -31,6 +33,7 @@ public class Pin {
                String status) {
         this.id = id;
         this.group_name = group_name;
+        this.description = text;
         this.color = color;
         this.author = author;
         this.date_creation = date_creation;
@@ -40,29 +43,12 @@ public class Pin {
         this.status = status;
     }
 
-    public Pin(Integer id,
-               String group_name,
-               String color,
-               String author,
-               Date date_creation,
-               Integer priority,
-               String status) {
-        this.id = id;
-        this.group_name = group_name;
-        this.color = color;
-        this.author = author;
-        this.date_creation = date_creation;
-        this.date_completion = null;
-        this.date_deadline = null;
-        this.priority = priority;
-        this.status = status;
-    }
-
     @Override
     public String toString() {
         return "Pin{" +
                 "id=" + id +
                 ", group_name='" + group_name + '\'' +
+                ", description='" + description + '\'' +
                 ", color='" + color + '\'' +
                 ", author='" + author + '\'' +
                 ", date_creation=" + date_creation +
@@ -87,6 +73,14 @@ public class Pin {
 
     public void setGroup_name(String group_name) {
         this.group_name = group_name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getColor() {
