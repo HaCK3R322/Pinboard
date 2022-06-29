@@ -1,6 +1,8 @@
 package com.androsov.pinboard.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Entity
@@ -9,51 +11,43 @@ public class Pin {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
-    private String group_name;
+    private String groupName;
     private String description;
     private String color;
     private String author;
-    private Date date_creation;
-    private Date date_completion;
-    private Date date_deadline;
+    private Date dateCreation;
+    private Date dateCompletion;
+    private Date dateDeadline;
     private Integer priority;
+    @NotBlank(message = "Status must no be blank")
     private String status;
 
     protected Pin() {}
 
-    public Pin(Integer id,
-               String group_name,
-               String text,
-               String color,
-               String author,
-               Date date_creation,
-               Date date_completion,
-               Date date_deadline,
-               Integer priority,
-               String status) {
+    public Pin(Integer id, String groupName, String description, String color, String author, Date dateCreation, Date dateCompletion, Date dateDeadline, Integer priority, String status) {
         this.id = id;
-        this.group_name = group_name;
-        this.description = text;
+        this.groupName = groupName;
+        this.description = description;
         this.color = color;
         this.author = author;
-        this.date_creation = date_creation;
-        this.date_completion = date_completion;
-        this.date_deadline = date_deadline;
+        this.dateCreation = dateCreation;
+        this.dateCompletion = dateCompletion;
+        this.dateDeadline = dateDeadline;
         this.priority = priority;
         this.status = status;
     }
 
     @Override
     public String toString() {
-        return "Pin{" +
+        return "{" +
                 "id=" + id +
-                ", group_name='" + group_name + '\'' +
+                ", groupName='" + groupName + '\'' +
                 ", description='" + description + '\'' +
                 ", color='" + color + '\'' +
                 ", author='" + author + '\'' +
-                ", date_creation=" + date_creation +
-                ", date_completion=" + date_completion +
-                ", date_deadline=" + date_deadline +
+                ", dateCreation=" + dateCreation +
+                ", dateCompletion=" + dateCompletion +
+                ", dateDeadline=" + dateDeadline +
                 ", priority=" + priority +
                 ", status='" + status + '\'' +
                 '}';
@@ -67,12 +61,12 @@ public class Pin {
         this.id = id;
     }
 
-    public String getGroup_name() {
-        return group_name;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setGroup_name(String group_name) {
-        this.group_name = group_name;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public String getDescription() {
@@ -99,28 +93,28 @@ public class Pin {
         this.author = author;
     }
 
-    public Date getDate_creation() {
-        return date_creation;
+    public Date getDateCreation() {
+        return dateCreation;
     }
 
-    public void setDate_creation(Date date_creation) {
-        this.date_creation = date_creation;
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
     }
 
-    public Date getDate_completion() {
-        return date_completion;
+    public Date getDateCompletion() {
+        return dateCompletion;
     }
 
-    public void setDate_completion(Date date_completion) {
-        this.date_completion = date_completion;
+    public void setDateCompletion(Date dateCompletion) {
+        this.dateCompletion = dateCompletion;
     }
 
-    public Date getDate_deadline() {
-        return date_deadline;
+    public Date getDateDeadline() {
+        return dateDeadline;
     }
 
-    public void setDate_deadline(Date date_deadline) {
-        this.date_deadline = date_deadline;
+    public void setDateDeadline(Date dateDeadline) {
+        this.dateDeadline = dateDeadline;
     }
 
     public Integer getPriority() {

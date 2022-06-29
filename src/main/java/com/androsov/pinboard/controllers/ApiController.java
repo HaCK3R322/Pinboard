@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ApiController {
-    @GetMapping("/api/create")
+    @GetMapping("/docs/api/pins/create")
     public String create() {
         return """
                 Mapping method for creation number of pins.<br />
@@ -38,5 +38,12 @@ public class ApiController {
                   }<br />
                 ]<br />
                 """;
+    }
+
+    @GetMapping("/docs/api/pins/get/byAutor")
+    public String getAllByAuthor() {
+        return """
+               Accepts get request with param 'author' and returns JSON array of pins with such author.
+               """;
     }
 }
