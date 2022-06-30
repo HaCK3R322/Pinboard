@@ -29,11 +29,6 @@ public class PinController {
         this.repository = repository;
     }
 
-    /**
-     * Mapping method for creation number of pins.
-     * @param pinsToCreate - array of pins in JSON style. (id will be generated automatically)
-     * @return Response body contains array of id for each of pins in given order (also in JSON).
-     */
     @PostMapping("/api/pins/create")
     @ResponseBody
     public ResponseEntity<List<Integer>> create(@Valid @RequestBody Iterable<Pin> pinsToCreate) {
@@ -48,6 +43,14 @@ public class PinController {
         return new ResponseEntity<>(ids, HttpStatus.CREATED);
     }
 
+    @PutMapping("api/pins/update")
+    @ResponseBody
+    public ResponseEntity<String> update(@Valid @RequestBody Pin pinToUpdate) {
+        repository.save(pinToUpdate);
+
+        return new ResponseEntity<>("Pin updated. New pin: " + pinToUpdate.toString(), HttpStatus.OK);
+    }
+
     @GetMapping("/api/pins/get/byAuthor")
     @ResponseBody
     public ResponseEntity<Iterable<Pin>> getAllByAuthor(@RequestParam String author) {
@@ -56,11 +59,6 @@ public class PinController {
         return new ResponseEntity<>(pins, HttpStatus.OK);
     }
 
-    /**
-     * Returns JSON of all pins by color.
-     * @param color - name of author
-     * @return JSON of all pins by color.
-     */
     @GetMapping("/api/pins/get/byColor")
     @ResponseBody
     public ResponseEntity<Iterable<Pin>> getAllByColor(@RequestParam String color) {

@@ -24,7 +24,16 @@ public class Pin {
 
     protected Pin() {}
 
-    public Pin(Integer id, String groupName, String description, String color, String author, Date dateCreation, Date dateCompletion, Date dateDeadline, Integer priority, String status) {
+    public Pin(Integer id,
+               String groupName,
+               String description,
+               String color,
+               String author,
+               Date dateCreation,
+               Date dateCompletion,
+               Date dateDeadline,
+               Integer priority,
+               String status) {
         this.id = id;
         this.groupName = groupName;
         this.description = description;

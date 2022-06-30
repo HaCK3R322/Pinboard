@@ -21,8 +21,4 @@ public interface PinRepository extends CrudRepository<Pin, Integer> {
     Iterable<Pin> getAllByGroupName(String groupName);
     Iterable<Pin> getAllByPriority(Integer priority);
     Iterable<Pin> getAllByStatus(String author);
-
-//    @Modifying
-//    @Query("update Pin p set p.author=?1 where p.id = ?2")
-//    void setPinAuthorById(String newAuthor, Integer userId);
 }
