@@ -1,7 +1,9 @@
 package com.androsov.pinboard.controllers;
 
 import com.androsov.pinboard.entities.Pin;
+import com.androsov.pinboard.entities.Tag;
 import com.androsov.pinboard.repository.PinRepository;
+import com.androsov.pinboard.repository.TagRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -10,8 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @CrossOrigin //TODO: set needed origin
@@ -24,9 +25,11 @@ public class PinController {
     }
 
     final PinRepository repository;
+    final TagRepository tagRepository;
 
-    public PinController(PinRepository repository) {
+    public PinController(PinRepository repository, TagRepository tagRepository) {
         this.repository = repository;
+        this.tagRepository = tagRepository;
     }
 
     @PostMapping("/api/pins/create")
@@ -49,6 +52,43 @@ public class PinController {
         repository.save(pinToUpdate);
 
         return new ResponseEntity<>("Pin updated. New pin: " + pinToUpdate.toString(), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/pins/get/byTags")
+    @ResponseBody
+    public ResponseEntity<Iterable<Pin>> getAllByTags(@RequestBody Iterable<String> tagsDescriptions) { // TODO: подумать как можно это упростить
+        List<Tag> tags = new ArrayList<>();
+        Integer requiredNumberOfMatches = 0;
+        for (String tagDescription:
+             tagsDescriptions) {
+            requiredNumberOfMatches += 1;
+            tags.addAll(tagRepository.getAllByDescription(tagDescription));
+        }
+
+        Set<Integer> suitablePinsIds = new HashSet<>();
+        for (Tag tag:
+             tags) {
+            suitablePinsIds.add(tag.getPinId());
+        }
+
+        Map<Integer, Integer> pinNumberOfTagMatches = new HashMap<>();
+        for (Tag tag:
+             tags) {
+            if(pinNumberOfTagMatches.containsKey(tag.getPinId())) {
+                pinNumberOfTagMatches.replace(tag.getPinId(), pinNumberOfTagMatches.get(tag.getPinId()) + 1);
+            } else {
+                pinNumberOfTagMatches.put(tag.getPinId(), 1);
+            }
+        }
+
+        List<Pin> pins = new ArrayList<>();
+        for (Integer pinId:
+             suitablePinsIds) {
+            if(pinNumberOfTagMatches.get(pinId) >= requiredNumberOfMatches)
+                pins.add(repository.getPinById(pinId));
+        }
+
+        return new ResponseEntity<>(pins, HttpStatus.OK);
     }
 
     @GetMapping("/api/pins/get/byAuthor")
