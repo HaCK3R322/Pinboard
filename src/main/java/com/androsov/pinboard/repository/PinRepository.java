@@ -21,4 +21,6 @@ public interface PinRepository extends CrudRepository<Pin, Integer> {
     Iterable<Pin> getAllByGroupName(String groupName);
     Iterable<Pin> getAllByPriority(Integer priority);
     Iterable<Pin> getAllByStatus(String author);
+
+    void deleteById(Integer id);
 }

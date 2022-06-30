@@ -40,10 +40,21 @@ public class ApiController {
                 """;
     }
 
-    @GetMapping("/docs/api/pins/get/byAutor")
-    public String getAllByAuthor() {
+    // Mapping get requests to get api description of pins controller with examples of requests and responses.
+    @GetMapping("/docs/api/pins/get/byTags")
+    public String getAllByTags() {
         return """
-               Accepts get request with param 'author' and returns JSON array of pins with such author.
-               """;
+                Mapping method for getting all pins by tags.<br />
+                @param tagsDescriptions - array of tags in JSON style. (id will be generated automatically)<br />
+                @return Response body contains array of pins in given order. (also JSON)<br />
+                <br />
+                example of request body:<br />
+                <br />
+                [<br />
+                  "tag1",<br />
+                  "tag2",<br />
+                  "tag3"<br />
+                ]<br />
+                """;
     }
 }

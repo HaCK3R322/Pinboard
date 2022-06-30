@@ -14,6 +14,7 @@ public class Pin {
     private String groupName;
     private String description;
     private String color;
+    @NotBlank
     private String author;
     private Date dateCreation;
     private Date dateCompletion;

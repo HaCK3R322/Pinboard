@@ -56,12 +56,14 @@ public class PinController {
 
     @GetMapping("/api/pins/get/byTags")
     @ResponseBody
-    public ResponseEntity<Iterable<Pin>> getAllByTags(@RequestBody Iterable<String> tagsDescriptions) { // TODO: подумать как можно это упростить
+    public ResponseEntity<Iterable<Pin>> getAllByTags(@Valid @RequestBody List<String> tagsDescriptions) { // TODO: подумать как можно это упростить
+        // Create Integer that represents required number of matches of tags for pins and set it to list size of tags
+        Integer requiredNumberOfMatches = tagsDescriptions.size();
+
+        // Create list of tags by descriptions from request
         List<Tag> tags = new ArrayList<>();
-        Integer requiredNumberOfMatches = 0;
         for (String tagDescription:
              tagsDescriptions) {
-            requiredNumberOfMatches += 1;
             tags.addAll(tagRepository.getAllByDescription(tagDescription));
         }
 
@@ -71,24 +73,27 @@ public class PinController {
             suitablePinsIds.add(tag.getPinId());
         }
 
-        Map<Integer, Integer> pinNumberOfTagMatches = new HashMap<>();
+        // Count all tags matches for each pin.
+        Map<Integer, Integer> pinIdToMatchesCount = new HashMap<>();
+        for (Integer pinId:
+             suitablePinsIds) {
+            pinIdToMatchesCount.put(pinId, 0);
+        }
         for (Tag tag:
              tags) {
-            if(pinNumberOfTagMatches.containsKey(tag.getPinId())) {
-                pinNumberOfTagMatches.replace(tag.getPinId(), pinNumberOfTagMatches.get(tag.getPinId()) + 1);
-            } else {
-                pinNumberOfTagMatches.put(tag.getPinId(), 1);
+            pinIdToMatchesCount.put(tag.getPinId(), pinIdToMatchesCount.get(tag.getPinId()) + 1);
+        }
+
+        // Filter pins by required number of matches.
+        List<Pin> suitablePins = new ArrayList<>();
+        for (Integer pinId:
+             pinIdToMatchesCount.keySet()) {
+            if (pinIdToMatchesCount.get(pinId).equals(requiredNumberOfMatches)) {
+                suitablePins.add(repository.getPinById(pinId));
             }
         }
 
-        List<Pin> pins = new ArrayList<>();
-        for (Integer pinId:
-             suitablePinsIds) {
-            if(pinNumberOfTagMatches.get(pinId) >= requiredNumberOfMatches)
-                pins.add(repository.getPinById(pinId));
-        }
-
-        return new ResponseEntity<>(pins, HttpStatus.OK);
+        return new ResponseEntity<>(suitablePins, HttpStatus.OK);
     }
 
     @GetMapping("/api/pins/get/byAuthor")
@@ -161,5 +166,25 @@ public class PinController {
         Iterable<Pin> pins = repository.getAllByStatus(status);
 
         return new ResponseEntity<>(pins, HttpStatus.OK);
+    }
+
+    // POST mapping method for deleting number of pins by id, that runs through list of ids and deletes them one by one.
+    // Also deletes all related tags from tagRepository that PinId field contains deleted pins ids.
+    // Returns list of deleted pins.
+    @PostMapping("/api/pins/delete/byId")
+    @ResponseBody
+    public ResponseEntity<List<Pin>> deleteById(@Valid @RequestBody List<Integer> ids) {
+        List<Pin> deletedPins = new ArrayList<>();
+        List<Tag> deletedTags = new ArrayList<>();
+        for (Integer id:
+                ids) {
+            Pin pin = repository.getPinById(id);
+            deletedPins.add(pin);
+            deletedTags.addAll(tagRepository.getAllByPinId(id));
+            repository.deleteById(id);
+        }
+        tagRepository.deleteAll(deletedTags);
+
+        return new ResponseEntity<>(deletedPins, HttpStatus.OK);
     }
 }
