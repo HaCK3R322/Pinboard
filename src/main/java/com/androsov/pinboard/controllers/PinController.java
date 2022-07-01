@@ -187,4 +187,178 @@ public class PinController {
 
         return new ResponseEntity<>(deletedPins, HttpStatus.OK);
     }
+
+    //POST mapping method for deleting number of pins by some params that runs through list of params and deletes each pin one by one.
+    //Also deletes all related tags from tagRepository that PinId field contains deleted pins ids.
+    //Returns list of deleted pins.
+    @PostMapping("/api/pins/delete/byAuthor")
+    @ResponseBody
+    public ResponseEntity<List<Pin>> deleteByAuthor(@Valid @RequestBody List<String> authors) {
+        List<Pin> deletedPins = new ArrayList<>();
+        List<Tag> deletedTags = new ArrayList<>();
+        for (String author:
+                authors) {
+            deletedPins.addAll(repository.getAllByAuthor(author));
+            for (Pin pin:
+                    deletedPins) {
+                deletedTags.addAll(tagRepository.getAllByPinId(pin.getId()));
+            }
+            repository.deleteAllByAuthor(author);
+        }
+        tagRepository.deleteAll(deletedTags);
+
+        return new ResponseEntity<>(deletedPins, HttpStatus.OK);
+    }
+
+    @PostMapping("/api/pins/delete/byColor")
+    @ResponseBody
+    public ResponseEntity<List<Pin>> deleteByColor(@Valid @RequestBody List<String> colors) {
+        List<Pin> deletedPins = new ArrayList<>();
+        List<Tag> deletedTags = new ArrayList<>();
+        for (String color:
+                colors) {
+            deletedPins.addAll(repository.getAllByColor(color));
+            for (Pin pin:
+                    deletedPins) {
+                deletedTags.addAll(tagRepository.getAllByPinId(pin.getId()));
+            }
+            repository.deleteAllByColor(color);
+        }
+        tagRepository.deleteAll(deletedTags);
+
+        return new ResponseEntity<>(deletedPins, HttpStatus.OK);
+    }
+
+    @PostMapping("/api/pins/delete/byDateCompletion")
+    @ResponseBody
+    public ResponseEntity<List<Pin>> deleteByDateCompletion(@Valid @RequestBody List<Date> dates) {
+        List<Pin> deletedPins = new ArrayList<>();
+        List<Tag> deletedTags = new ArrayList<>();
+        for (Date date:
+                dates) {
+            deletedPins.addAll(repository.getAllByDateCompletion(date));
+            for (Pin pin:
+                    deletedPins) {
+                deletedTags.addAll(tagRepository.getAllByPinId(pin.getId()));
+            }
+            repository.deleteAllByDateCompletion(date);
+        }
+        tagRepository.deleteAll(deletedTags);
+
+        return new ResponseEntity<>(deletedPins, HttpStatus.OK);
+    }
+
+    @PostMapping("/api/pins/delete/byDateCreation")
+    @ResponseBody
+    public ResponseEntity<List<Pin>> deleteByDateCreation(@Valid @RequestBody List<Date> dates) {
+        List<Pin> deletedPins = new ArrayList<>();
+        List<Tag> deletedTags = new ArrayList<>();
+        for (Date date:
+                dates) {
+            deletedPins.addAll(repository.getAllByDateCreation(date));
+            for (Pin pin:
+                    deletedPins) {
+                deletedTags.addAll(tagRepository.getAllByPinId(pin.getId()));
+            }
+            repository.deleteAllByDateCreation(date);
+        }
+        tagRepository.deleteAll(deletedTags);
+
+        return new ResponseEntity<>(deletedPins, HttpStatus.OK);
+    }
+
+    @PostMapping("/api/pins/delete/byDateDeadline")
+    @ResponseBody
+    public ResponseEntity<List<Pin>> deleteByDateDeadline(@Valid @RequestBody List<Date> dates) {
+        List<Pin> deletedPins = new ArrayList<>();
+        List<Tag> deletedTags = new ArrayList<>();
+        for (Date date:
+                dates) {
+            deletedPins.addAll(repository.getAllByDateDeadline(date));
+            for (Pin pin:
+                    deletedPins) {
+                deletedTags.addAll(tagRepository.getAllByPinId(pin.getId()));
+            }
+            repository.deleteAllByDateDeadline(date);
+        }
+        tagRepository.deleteAll(deletedTags);
+
+        return new ResponseEntity<>(deletedPins, HttpStatus.OK);
+    }
+
+    @PostMapping("/api/pins/delete/byDescription")
+    @ResponseBody
+    public ResponseEntity<List<Pin>> deleteByDescription(@Valid @RequestBody List<String> descriptions) {
+        List<Pin> deletedPins = new ArrayList<>();
+        List<Tag> deletedTags = new ArrayList<>();
+        for (String description:
+                descriptions) {
+            deletedPins.addAll(repository.getAllByDescription(description));
+            for (Pin pin:
+                    deletedPins) {
+                deletedTags.addAll(tagRepository.getAllByPinId(pin.getId()));
+            }
+            repository.deleteAllByDescription(description);
+        }
+        tagRepository.deleteAll(deletedTags);
+
+        return new ResponseEntity<>(deletedPins, HttpStatus.OK);
+    }
+
+    @PostMapping("/api/pins/delete/byGroupName")
+    @ResponseBody
+    public ResponseEntity<List<Pin>> deleteByGroupName(@Valid @RequestBody List<String> groupNames) {
+        List<Pin> deletedPins = new ArrayList<>();
+        List<Tag> deletedTags = new ArrayList<>();
+        for (String groupName:
+                groupNames) {
+            deletedPins.addAll(repository.getAllByGroupName(groupName));
+            for (Pin pin:
+                    deletedPins) {
+                deletedTags.addAll(tagRepository.getAllByPinId(pin.getId()));
+            }
+            repository.deleteAllByGroupName(groupName);
+        }
+        tagRepository.deleteAll(deletedTags);
+
+        return new ResponseEntity<>(deletedPins, HttpStatus.OK);
+    }
+
+    @PostMapping("/api/pins/delete/byPriority")
+    @ResponseBody
+    public ResponseEntity<List<Pin>> deleteByPriority(@Valid @RequestBody List<Integer> priorities) {
+        List<Pin> deletedPins = new ArrayList<>();
+        List<Tag> deletedTags = new ArrayList<>();
+        for (Integer priority:
+                priorities) {
+            deletedPins.addAll(repository.getAllByPriority(priority));
+            for (Pin pin:
+                    deletedPins) {
+                deletedTags.addAll(tagRepository.getAllByPinId(pin.getId()));
+            }
+            repository.deleteAllByPriority(priority);
+        }
+        tagRepository.deleteAll(deletedTags);
+
+        return new ResponseEntity<>(deletedPins, HttpStatus.OK);
+    }
+
+    @PostMapping("/api/pins/delete/byStatus")
+    @ResponseBody
+    public ResponseEntity<List<Pin>> deleteByStatus(@Valid @RequestBody List<String> statuses) {
+        List<Pin> deletedPins = new ArrayList<>();
+        List<Tag> deletedTags = new ArrayList<>();
+        for (String status:
+                statuses) {
+            deletedPins.addAll(repository.getAllByStatus(status));
+            for (Pin pin:
+                    deletedPins) {
+                deletedTags.addAll(tagRepository.getAllByPinId(pin.getId()));
+            }
+            repository.deleteAllByStatus(status);
+        }
+        tagRepository.deleteAll(deletedTags);
+
+        return new ResponseEntity<>(deletedPins, HttpStatus.OK);
+    }
 }
