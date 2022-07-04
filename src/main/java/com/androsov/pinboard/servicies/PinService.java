@@ -2,15 +2,15 @@ package com.androsov.pinboard.servicies;
 
 import com.androsov.pinboard.entities.Pin;
 import com.androsov.pinboard.entities.PinUserAccess;
+import com.androsov.pinboard.exceptions.NoAccessException;
+import com.androsov.pinboard.exceptions.NotFoundException;
 import com.androsov.pinboard.repository.PinRepository;
 import com.androsov.pinboard.repository.PinUserAccessRepository;
 import com.androsov.pinboard.repository.TagRepository;
 import com.androsov.pinboard.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +47,11 @@ public class PinService {
         return ids;
     }
 
+    /**
+     * Returns all pins created by user.
+     * @param userId id of user
+     * @return Iterable of pins
+     */
     public Iterable<Pin> getAllAccessiblePins(Integer userId) {
         try {
             // get all accessible pins ids
@@ -60,5 +65,11 @@ public class PinService {
         } catch (NullPointerException e) {
             return new ArrayList<>();
         }
+    }
+
+    public Pin update(Pin pin) throws NoAccessException {
+        if(pin.getId() == null) throw new NotFoundException("Pin id is null");
+
+        return pinRepository.save(pin);
     }
 }
