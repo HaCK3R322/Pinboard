@@ -14,7 +14,7 @@ import java.util.List;
 public interface PinRepository extends CrudRepository<Pin, Integer> {
     // getters
     Pin getPinById(Integer id);
-    List<Pin> getAllByAuthor(String author);
+    List<Pin> getAllByAuthorId(Integer authorId);
     List<Pin> getAllByColor(String author);
     List<Pin> getAllByDateCompletion(Date dateCompletion);
     List<Pin> getAllByDateCreation(Date dateCreation);
@@ -26,7 +26,7 @@ public interface PinRepository extends CrudRepository<Pin, Integer> {
 
     // deleting methods
     void deleteById(Integer id);
-    void deleteAllByAuthor(String author);
+    void deleteByAuthorId(Integer authorId);
     void deleteAllByColor(String color);
     void deleteAllByDateCompletion(Date dateCompletion);
     void deleteAllByDateCreation(Date dateCreation);

@@ -10,9 +10,7 @@ public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
-    @NotNull
     private Integer pinId;
-    @NotBlank
     private String description;
 
     protected Tag() {}
