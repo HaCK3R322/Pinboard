@@ -1,6 +1,7 @@
 package com.androsov.pinboard.controllers;
 
 import com.androsov.pinboard.entities.Pin;
+import com.androsov.pinboard.entities.PinUserAccess;
 import com.androsov.pinboard.entities.Tag;
 import com.androsov.pinboard.exceptions.NotFoundException;
 import com.androsov.pinboard.exceptions.NoAccessException;
@@ -50,6 +51,12 @@ public class PinController {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleNullPointerException(NullPointerException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     final PinRepository repository;
     final TagRepository tagRepository;
     final UserRepository userRepository;
@@ -90,14 +97,20 @@ public class PinController {
         return new ResponseEntity<>(createdPinsIds, HttpStatus.CREATED);
     }
 
-    @PutMapping("api/pins/update")
+    @PutMapping("/api/pins/update")
     @ResponseBody
     public ResponseEntity<Pin> update(@Valid @RequestBody Pin pinToUpdate, Principal principal) {
+        // get current user id by name from principal
         String username = principal.getName();
         Integer currentUserId = userRepository.findByUsername(username).getId();
-        if(!Objects.equals(pinToUpdate.getId(), currentUserId))
-            throw new NoAccessException("You dont have access to this pin");
 
+        // get all accesses for this pin and check if user has access to it
+        List<Integer> pinUserAccessors = pinService.getAllAccessorsIds(pinToUpdate.getId());
+        if (!pinUserAccessors.contains(currentUserId)) {
+            throw new NoAccessException("You don't have access to this pin");
+        }
+
+        pinToUpdate.setAuthorId(currentUserId); // maybe I can make it easier?
         Pin pin = pinService.update(pinToUpdate);
 
         return new ResponseEntity<>(pin, HttpStatus.OK);

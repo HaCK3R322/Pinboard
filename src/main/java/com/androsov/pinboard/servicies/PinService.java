@@ -72,4 +72,10 @@ public class PinService {
 
         return pinRepository.save(pin);
     }
+
+    public List<Integer> getAllAccessorsIds(Integer pinId) {
+        return pinUserAccessesRepository.findByPinId(pinId).stream()
+                .map(PinUserAccess::getUserId)
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+    }
 }
