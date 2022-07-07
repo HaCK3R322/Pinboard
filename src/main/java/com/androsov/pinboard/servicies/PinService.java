@@ -78,4 +78,16 @@ public class PinService {
                 .map(PinUserAccess::getUserId)
                 .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
+
+    public List<Pin> deleteAllInList(Iterable<Pin> pins) {
+        List<Pin> deletedPins = new ArrayList<>();
+        for (Pin pin:
+                pins) {
+            deletedPins.add(pin);
+            pinRepository.deleteById(pin.getId());
+            pinUserAccessesRepository.deleteAllByPinId(pin.getId());
+        }
+
+        return deletedPins;
+    }
 }

@@ -1,8 +1,6 @@
 package com.androsov.pinboard.controllers;
 
 import com.androsov.pinboard.entities.Pin;
-import com.androsov.pinboard.entities.PinUserAccess;
-import com.androsov.pinboard.entities.Tag;
 import com.androsov.pinboard.exceptions.NotFoundException;
 import com.androsov.pinboard.exceptions.NoAccessException;
 import com.androsov.pinboard.repository.PinRepository;
@@ -69,10 +67,27 @@ public class PinController {
         this.pinService = pinService;
     }
 
-    @PostMapping("/api/pins/test")
+    @GetMapping("/api/pins/create")
     @ResponseBody
-    public ResponseEntity<Iterable<Pin>> testPin(@Valid @RequestBody Iterable<Pin> pins) {
-        return new ResponseEntity<>(pins, HttpStatus.OK);
+    public ResponseEntity<String> createDescription() {
+        return new ResponseEntity<>("""
+               This is a page to create pins.
+               After you authorized, you can send here POST requests with JSON body, that contains JSON array of pins.
+               Example of JSON body:
+               [
+                   {
+                       "groupName": "groupName",
+                       "description": "description",
+                       "color": "color",
+                       "dateCreation": "2020-01-01",
+                       "dateCompletion": "2020-01-01",
+                       "dateDeadline": "2020-01-01",
+                       "priority": 1,
+                       "status": "status"
+                   }
+               ]
+               """,
+                HttpStatus.OK);
     }
 
     /**
@@ -97,12 +112,29 @@ public class PinController {
         return new ResponseEntity<>(createdPinsIds, HttpStatus.CREATED);
     }
 
+    @GetMapping("/api/pins/update")
+    @ResponseBody
+    public ResponseEntity<String> updateDescription() {
+        return new ResponseEntity<>("""
+               This is a page to update pins.
+               After you authorized, you can send here POST requests with JSON body, that contains JSON of ONE pin.
+               Be carefully, all fields that not specified will set to null.
+               Example of JSON body:
+               {
+                       "id": 1,
+                       "groupName": "groupName",
+                       "description": "description",
+                       "color": "color"
+               }
+               """,
+                HttpStatus.OK);
+    }
+
     @PutMapping("/api/pins/update")
     @ResponseBody
     public ResponseEntity<Pin> update(@Valid @RequestBody Pin pinToUpdate, Principal principal) {
         // get current user id by name from principal
-        String username = principal.getName();
-        Integer currentUserId = userRepository.findByUsername(username).getId();
+        Integer currentUserId = userRepository.findByUsername(principal.getName()).getId();
 
         // get all accesses for this pin and check if user has access to it
         List<Integer> pinUserAccessors = pinService.getAllAccessorsIds(pinToUpdate.getId());
@@ -128,6 +160,50 @@ public class PinController {
         Integer userId = userRepository.findByUsername(principal.getName()).getId();
 
         Iterable<Pin> pins = pinService.getAllAccessiblePins(userId);
+        return new ResponseEntity<>(pins, HttpStatus.OK);
+    }
+
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<String> deleteAllDescription() {
+        return new ResponseEntity<>("""
+               This is a page to delete pins.
+               After you authorized, you can send here POST requests with JSON body,
+               that contains JSON array of pins. The only really important field is id.
+               
+               Example of JSON body:
+               [
+                   {
+                    "id": 1
+                   },
+                   {
+                    "id": 2
+                    "color": "red"
+                   }
+               ]
+               
+               You can delete only pins that you've created.
+               Deleting is full deleting of pin from database.
+               If you want to make pin "done" or something, you can send update request.
+               """,
+                HttpStatus.OK);
+    }
+
+    @PostMapping
+    @ResponseBody
+    public ResponseEntity<Iterable<Pin>> deleteAll(@Valid @RequestBody Iterable<Pin> pinsToDelete, Principal principal) {
+        // get author id by name from principal
+        String username = principal.getName();
+        Integer userId = userRepository.findByUsername(username).getId();
+
+        // check if user is author to all pins
+        for (Pin pin:
+                pinsToDelete) {
+            if(!pin.getAuthorId().equals(userId))
+                throw new NoAccessException("Delete pin can only author of the pin");
+        }
+
+        Iterable<Pin> pins = pinService.deleteAllInList(pinsToDelete);
         return new ResponseEntity<>(pins, HttpStatus.OK);
     }
 }

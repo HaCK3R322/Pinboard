@@ -12,4 +12,6 @@ public interface PinUserAccessRepository extends CrudRepository<PinUserAccess, I
     List<PinUserAccess> findByPinId(Integer pinId);
 
     void deleteByPinId(Integer pinId);
+
+    void deleteAllByPinId(Integer pinId);
 }

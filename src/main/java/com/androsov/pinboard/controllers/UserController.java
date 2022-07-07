@@ -8,7 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.sql.SQLException;
 
 @RestController
 @CrossOrigin
@@ -40,8 +43,15 @@ public class UserController {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<String> SQLException(DataIntegrityViolationException e) {
+        return new ResponseEntity<>("Username already in use", HttpStatus.CONFLICT);
+    }
+
     // POST mapping method for user registration, that creates user
     @PostMapping("/register")
+    @ResponseBody
     public User register(@Valid @RequestBody User user) {
         return userService.save(user);
     }
