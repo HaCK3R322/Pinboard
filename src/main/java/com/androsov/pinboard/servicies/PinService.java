@@ -90,4 +90,8 @@ public class PinService {
 
         return deletedPins;
     }
+
+    public boolean hasAccess(Integer pinId, Integer userId) {
+        return pinUserAccessesRepository.findByPinIdAndUserId(pinId, userId) != null;
+    }
 }
