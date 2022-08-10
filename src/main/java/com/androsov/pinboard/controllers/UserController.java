@@ -49,13 +49,6 @@ public class UserController {
         return new ResponseEntity<>("Username already in use", HttpStatus.CONFLICT);
     }
 
-    // POST mapping method for user registration, that creates user
-    @PostMapping("/register")
-    @ResponseBody
-    public User register(@Valid @RequestBody User user) {
-        return userService.save(user);
-    }
-
     // POST mapping to change username of user (only for authenticated user)
     @PostMapping("/user/change/username")
     public User changeUsername(@RequestBody String newUsername, Principal principal) {

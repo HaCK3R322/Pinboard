@@ -56,6 +56,8 @@ public class SecurityConfiguration {
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/")
                     .permitAll()
                     .and()
                 .logout()
