@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.androsov</groupId>
     <artifactId>Pinboard</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>Pinboard</name>
     <description>Pinboard</description>
     <properties>

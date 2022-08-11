@@ -1,6 +1,7 @@
 package com.androsov.pinboard.configs.security;
 
 import com.androsov.pinboard.servicies.UserDetailsService;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -9,10 +10,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -38,6 +45,19 @@ class CsrfTokenResponseHeaderBindingFilter extends OncePerRequestFilter {
     }
 }
 
+class SimpleCORSFilter extends OncePerRequestFilter {
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, javax.servlet.FilterChain filterChain) throws ServletException, IOException {
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+
+        filterChain.doFilter(request, response);
+    }
+}
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -50,6 +70,8 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .authorizeRequests()
                     .antMatchers("/register", "/login").permitAll()
                     .antMatchers("/**").authenticated()
@@ -64,7 +86,7 @@ public class SecurityConfiguration {
                     .permitAll()
                     .and()
                 .csrf().disable();
-//                .addFilterAfter(new CsrfTokenResponseHeaderBindingFilter(), CsrfFilter.class);
+        http.addFilterAfter(new SimpleCORSFilter(), CorsFilter.class);
 
         return http.build();
     }
