@@ -1,5 +1,6 @@
 package com.androsov.pinboard.controllers;
 
+import com.androsov.pinboard.configs.security.SecurityConfiguration;
 import com.androsov.pinboard.entities.User;
 import com.androsov.pinboard.exceptions.NoAccessException;
 import com.androsov.pinboard.exceptions.NotFoundException;
@@ -12,6 +13,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +27,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.sql.SQLException;
+import java.util.Collection;
 
 @RestController
 @CrossOrigin

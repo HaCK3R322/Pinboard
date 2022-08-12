@@ -4,6 +4,7 @@ import com.androsov.pinboard.entities.User;
 import com.androsov.pinboard.exceptions.NoAccessException;
 import com.androsov.pinboard.exceptions.NotFoundException;
 import com.androsov.pinboard.repository.UserRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,15 @@ public class UserService {
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public User register(User user) {
+        // if username not unique throw exception
+        if (userRepository.findByUsername(user.getUsername()) != null) {
+            throw new DataIntegrityViolationException("Username already exists");
+        }
+
+        return save(user);
     }
 
     public User save(User user) {

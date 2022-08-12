@@ -4,9 +4,12 @@ import com.androsov.pinboard.servicies.UserDetailsService;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -46,13 +49,18 @@ class CsrfTokenResponseHeaderBindingFilter extends OncePerRequestFilter {
 }
 
 class SimpleCORSFilter extends OncePerRequestFilter {
+    protected static final String ALLOWED_ORIGINS = "http://localhost:3000";
+    protected static final String ALLOWED_METHODS = "GET,POST,PUT,DELETE,OPTIONS,UPDATE";
+    protected static final String ALLOWED_HEADERS = "X-Requested-With,Content-Type,Accept,Origin,Authorization,X-CSRF-TOKEN";
+    protected static final String ALLOW_CREDENTIALS = "true";
+    protected static final String MAX_AGE = "3600";
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, javax.servlet.FilterChain filterChain) throws ServletException, IOException {
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-        response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Origin", ALLOWED_ORIGINS);
+        response.setHeader("Access-Control-Allow-Methods", ALLOWED_METHODS);
+        response.setHeader("Access-Control-Max-Age", MAX_AGE);
+        response.setHeader("Access-Control-Allow-Headers", ALLOWED_HEADERS);
+        response.setHeader("Access-Control-Allow-Credentials", ALLOW_CREDENTIALS);
 
         filterChain.doFilter(request, response);
     }
@@ -77,14 +85,12 @@ public class SecurityConfiguration {
                     .antMatchers("/**").authenticated()
                     .anyRequest().authenticated()
                     .and()
-                .formLogin()
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/")
-                    .permitAll()
-                    .and()
-                .logout()
-                    .permitAll()
-                    .and()
+//                .formLogin()
+//                    .permitAll()
+//                    .and()
+//                .logout()
+//                    .permitAll()
+//                    .and()
                 .csrf().disable();
         http.addFilterAfter(new SimpleCORSFilter(), CorsFilter.class);
 
