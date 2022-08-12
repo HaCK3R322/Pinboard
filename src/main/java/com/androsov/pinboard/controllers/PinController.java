@@ -19,7 +19,7 @@ import java.security.Principal;
 import java.util.*;
 
 @RestController
-@CrossOrigin //TODO: set needed origin
+@CrossOrigin
 @Validated
 public class PinController {
     @ExceptionHandler(ConstraintViolationException.class)

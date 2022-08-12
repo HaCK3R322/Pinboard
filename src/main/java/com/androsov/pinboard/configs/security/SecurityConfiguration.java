@@ -92,7 +92,7 @@ public class SecurityConfiguration {
 //                    .permitAll()
 //                    .and()
                 .csrf().disable();
-        http.addFilterAfter(new SimpleCORSFilter(), CorsFilter.class);
+        http.addFilterBefore(new SimpleCORSFilter(), CorsFilter.class);
 
         return http.build();
     }
