@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,13 +36,18 @@ public class LoginController {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<String> SQLException(DataIntegrityViolationException e) {
-        return new ResponseEntity<>("Username already in use", HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>("Username already in use", HttpStatus.CONFLICT);
     }
 
     public LoginController(UserService userService) {
         this.userService = userService;
+    }
+
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public void register(@Valid @ModelAttribute User user) {
+        userService.register(user);
     }
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -51,12 +57,21 @@ public class LoginController {
             throw new NotFoundException("User with username " + user.getUsername() + " not found");
         }
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String dbPassword = userService.getByName(user.getUsername()).getPassword();
+        String gotPassword = user.getPassword();
+
+        // check by BCryptPasswordEncoder
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (encoder.matches(gotPassword, dbPassword)) {
+            Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } else {
+            throw new NoAccessException("Wrong password");
+        }
     }
 
-    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public void register(@Valid @ModelAttribute User user) {
-        userService.register(user);
+    @PostMapping("/logout")
+    public void logout() {
+        SecurityContextHolder.clearContext();
     }
 }

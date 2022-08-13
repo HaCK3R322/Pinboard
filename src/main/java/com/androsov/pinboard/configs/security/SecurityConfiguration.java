@@ -4,6 +4,7 @@ import com.androsov.pinboard.servicies.UserDetailsService;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -79,20 +80,25 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors()
+
                 .and()
                 .authorizeRequests()
                     .antMatchers("/register", "/login").permitAll()
                     .antMatchers("/**").authenticated()
                     .anyRequest().authenticated()
-                    .and()
-//                .formLogin()
-//                    .permitAll()
-//                    .and()
-//                .logout()
-//                    .permitAll()
-//                    .and()
+
+                .and()
                 .csrf().disable();
-        http.addFilterBefore(new SimpleCORSFilter(), CorsFilter.class);
+
+        http
+                .logout(logout -> logout
+                        .permitAll()
+                        .logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpStatus.OK.value())
+                        )
+                );
+
+        http
+                .addFilterBefore(new SimpleCORSFilter(), CorsFilter.class);
 
         return http.build();
     }
