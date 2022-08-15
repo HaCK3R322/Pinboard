@@ -1,18 +1,19 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 
+import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/LoginForm.css';
 
 import {fetchRegister, fetchLogin} from "../js/api/authentication";
 import BackendUrls from "../js/api/BackendUrls";
+import { getCookie, eraseCookie, setCookie } from '../js/util/cookie';
 
 const LoginForm = () => {
     let [username, setUsername] = React.useState("");
     let [password, setPassword] = React.useState("");
 
     function register() {
-        fetchRegister(BackendUrls.url + BackendUrls.register, username, password)
+        fetchRegister(BackendUrls.register, username, password)
             .then((response) => {
                 if(response.status === 200) {
                     alert("Successfully registered! You can now login.");
@@ -25,7 +26,7 @@ const LoginForm = () => {
     }
 
     function login() {
-        fetchLogin(BackendUrls.url + BackendUrls.login, username, password)
+        fetchLogin(BackendUrls.login, username, password)
             .then((response) => {
                 if(response.status === 200) {
                     console.log("Successfully logged in!");
@@ -33,8 +34,8 @@ const LoginForm = () => {
 
                     // this need to be replaced on some callback function idk
 
-                    document.cookie = "username=" + username;
-                    document.cookie = "password=" + password;
+                    setCookie("username", username, 1);
+                    setCookie("password", password, 1);
                     window.location.reload();
 
 
@@ -45,6 +46,9 @@ const LoginForm = () => {
                 } else {
                     alert("Something went wrong!");
                 }
+            }).catch((error) => {
+                console.log(error);
+                alert("Some server problems...!");
             });
     }
 

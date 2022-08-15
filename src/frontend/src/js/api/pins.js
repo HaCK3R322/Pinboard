@@ -27,13 +27,11 @@ function create(url, name) {
 export { create };
 
 function getAll(url) {
-    fetch(url, {
+    return fetch(url, {
         method: 'GET',
         mode: 'cors',
         credentials: 'include'
     });
-
-    return "got all pins";
 }
 
 export { getAll }

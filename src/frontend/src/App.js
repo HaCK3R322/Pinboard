@@ -1,42 +1,42 @@
 import React from 'react';
 
-import BackendUrls  from "./js/api/BackendUrls";
+import BackendUrls from "./js/api/BackendUrls";
+import { getCookie, eraseCookie, setCookie } from './js/util/cookie';
 import { LoginForm } from './components/LoginForm';
-import { fetchLogout } from "./js/api/authentication";
-
-import MainPage from "./js/MainPage";
-import {Button} from "react-bootstrap";
-
-
-// function that returns cookie value by name\
-function getCookieValueByName(name) {
-    let matches = document.cookie.match(new RegExp(
-        "(?:^|; )" + name.replace(/([.$?*|{}()\[\]\\+^])/g, '\\$1') + "=([^;]*)"
-    ));
-    return matches ? decodeURIComponent(matches[1]) : undefined;
-}
-
-const LogoutButton = () => {
-    return (
-        <Button variant="primary" onClick={
-            () => {
-                fetchLogout(BackendUrls.url + BackendUrls.logout);
-
-                document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                document.cookie = "password=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                window.location.reload();
-            }
-        }>Logout</Button>
-    );
-}
+import { fetchLogin}  from "./js/api/authentication";
+import { MainPage } from "./components/MainPage";
 
 const App = () => {
+    let [loggedIn, setLoggedIn] = React.useState("first init");
+
+    if (loggedIn === "first init") {
+        if(document.cookie.includes("JSESSIONID")) {
+            setLoggedIn("true");
+        } else if (document.cookie.includes("username") && document.cookie.includes("password")) {
+            let username = getCookie("username");
+            let password = getCookie("password");
+
+            fetchLogin(BackendUrls.login, username, password)
+                .then((response) => {
+                    if (response.status === 200) {
+                        console.log("Successfully logged in by cookies!");
+                        setLoggedIn("true");
+                    } else {
+                        alert("Something went wrong!");
+                        setLoggedIn("false");
+                    }
+                });
+        } else {
+            setLoggedIn("false");
+        }
+    }
+
     return(
         <div>
             {
-               document.cookie.includes("username")
-                   ? <MainPage />
-                   : <LoginForm />
+                loggedIn === "true"
+                    ? <MainPage />
+                    : <LoginForm />
             }
         </div>
     )

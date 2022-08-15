@@ -189,18 +189,19 @@ public class PinController {
                 HttpStatus.OK);
     }
 
-    @PostMapping
+    @DeleteMapping("/api/pins/delete")
     @ResponseBody
     public ResponseEntity<Iterable<Pin>> deleteAll(@Valid @RequestBody Iterable<Pin> pinsToDelete, Principal principal) {
         // get author id by name from principal
         String username = principal.getName();
         Integer userId = userRepository.findByUsername(username).getId();
 
-        // check if user is author to all pins
+        // check if user has access to all pins
         for (Pin pin:
                 pinsToDelete) {
-            if(!pin.getAuthorId().equals(userId))
-                throw new NoAccessException("Delete pin can only author of the pin");
+            if (!pinService.hasAccess(pin.getId(), userId)) {
+                throw new NoAccessException("You don't have access to this pin");
+            }
         }
 
         Iterable<Pin> pins = pinService.deleteAllInList(pinsToDelete);
