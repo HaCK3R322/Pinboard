@@ -1,7 +1,7 @@
-function create(url, name) {
+function fetchCreate(url, groupName, description) {
     let pin =  [{
-        groupName: name,
-        description: name,
+        groupName: groupName,
+        description: description,
         color: "color",
         dateCreation: "2020-01-01",
         dateCompletion: "2020-01-01",
@@ -10,9 +10,7 @@ function create(url, name) {
         status: "status"
     }]
 
-    let result;
-
-    fetch(url, {
+    return fetch(url, {
         method: 'POST',
         mode: 'cors',
         credentials: 'include',
@@ -20,11 +18,9 @@ function create(url, name) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(pin)
-    }).then((response) => {
-        result = response.statusCode;
     });
 }
-export { create };
+export { fetchCreate };
 
 function getAll(url) {
     return fetch(url, {
