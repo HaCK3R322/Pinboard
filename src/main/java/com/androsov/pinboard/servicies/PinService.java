@@ -67,6 +67,16 @@ public class PinService {
         }
     }
 
+    public Iterable<Pin> getAllNotDonePins(Integer userId) {
+        // get all pins from getAllAccessiblePins method
+        // then filter them by status 'done'
+        List<Pin> pins = (List<Pin>) getAllAccessiblePins(userId);
+
+        return pins.stream()
+                .filter(pin -> pin.getStatus().equals("done"))
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+    }
+
     public Pin update(Pin pin) throws NoAccessException {
         if(pin.getId() == null) throw new NotFoundException("Pin id is null");
 

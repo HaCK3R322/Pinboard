@@ -67,29 +67,6 @@ public class PinController {
         this.pinService = pinService;
     }
 
-    @GetMapping("/api/pins/create")
-    @ResponseBody
-    public ResponseEntity<String> createDescription() {
-        return new ResponseEntity<>("""
-               This is a page to create pins.
-               After you authorized, you can send here POST requests with JSON body, that contains JSON array of pins.
-               Example of JSON body:
-               [
-                   {
-                       "groupName": "groupName",
-                       "description": "description",
-                       "color": "color",
-                       "dateCreation": "2020-01-01",
-                       "dateCompletion": "2020-01-01",
-                       "dateDeadline": "2020-01-01",
-                       "priority": 1,
-                       "status": "status"
-                   }
-               ]
-               """,
-                HttpStatus.OK);
-    }
-
     /**
      * Takes author name from principal and creates pins and access to them.
      * @param pinsToCreate list of pins to create
@@ -110,24 +87,6 @@ public class PinController {
         // create pins and return their ids
         Iterable<Integer> createdPinsIds = pinService.create(pinsToCreate);
         return new ResponseEntity<>(createdPinsIds, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/api/pins/update")
-    @ResponseBody
-    public ResponseEntity<String> updateDescription() {
-        return new ResponseEntity<>("""
-               This is a page to update pins.
-               After you authorized, you can send here POST requests with JSON body, that contains JSON of ONE pin.
-               Be carefully, all fields that not specified will set to null.
-               Example of JSON body:
-               {
-                       "id": 1,
-                       "groupName": "groupName",
-                       "description": "description",
-                       "color": "color"
-               }
-               """,
-                HttpStatus.OK);
     }
 
     @PutMapping("/api/pins/update")
@@ -160,6 +119,16 @@ public class PinController {
         Integer userId = userRepository.findByUsername(principal.getName()).getId();
 
         Iterable<Pin> pins = pinService.getAllAccessiblePins(userId);
+        return new ResponseEntity<>(pins, HttpStatus.OK);
+    }
+
+    @GetMapping("/api/pins/get/notDone")
+    @ResponseBody
+    public ResponseEntity<Iterable<Pin>> getNotDone(Principal principal) {
+        // get author id by name from principal
+        Integer userId = userRepository.findByUsername(principal.getName()).getId();
+
+        Iterable<Pin> pins = pinService.getAllNotDonePins(userId);
         return new ResponseEntity<>(pins, HttpStatus.OK);
     }
 
