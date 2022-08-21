@@ -98,7 +98,7 @@ public class PinController {
         // get all accesses for this pin and check if user has access to it
         List<Integer> pinUserAccessors = pinService.getAllAccessorsIds(pinToUpdate.getId());
         if (!pinUserAccessors.contains(currentUserId)) {
-            throw new NoAccessException("You don't have access to this pin");
+            throw new NoAccessException("You (" + principal.getName() + ") don't have access to update this pin");
         }
 
         pinToUpdate.setAuthorId(currentUserId); // maybe I can make it easier?
@@ -169,7 +169,8 @@ public class PinController {
         for (Pin pin:
                 pinsToDelete) {
             if (!pinService.hasAccess(pin.getId(), userId)) {
-                throw new NoAccessException("You don't have access to this pin");
+//                throw new NoAccessException("You (" + principal.getName() + ") don't have access to delete this pin");
+                throw new NoAccessException("User with id " + userId + " doesn't have access to pin with id " + pin.getId());
             }
         }
 
