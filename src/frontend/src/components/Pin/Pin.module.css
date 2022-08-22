@@ -33,6 +33,37 @@
     border: 1px solid black;
 }
 
+.Dragging {
+    opacity: 0;
+
+    min-width: 0;
+    max-width: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.JustDraggedAnimation {
+    animation-name: justDragged;
+    animation-duration: 0.2s;
+    animation-iteration-count: 1;
+}
+
+@keyframes justDragged {
+    0% {
+        margin: 5px;
+        padding: 5px;
+        min-width: 100px;
+        max-width: 200px;
+    }
+    100% {
+        min-width: 0;
+        max-width: 0;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+
 .Done {
     background-color: gray;
 }

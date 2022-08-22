@@ -49,38 +49,54 @@ function Pin({pin, onDelete, onDone}) {
         onDelete(pin);
     }
 
-    let [isDone, setIsDone] = React.useState(pin.status === 'done');
     function onDoneDropHandler() {
         setIsDone(true);
         onDone(pin);
     }
 
+    // css
     const rootClass = [cl.Pin];
+
+    // if done change color
+    let [isDone, setIsDone] = React.useState(pin.status === 'done');
     if (isDone) {
         rootClass.push(cl.Done);
     }
 
-    let [isOverDone, setIsOverDone] = React.useState(false);
-    let [isOverDelete, setIsOverDelete] = React.useState(false);
-    if (isOverDone || isOverDelete) {
+    // if dragging remount component with animation (other pins shifting left)
+    const borderPinStyle = [...rootClass];
+    if (isDragging) {
+        borderPinStyle.push(cl.Dragging);
+        borderPinStyle.push(cl.JustDraggedAnimation)
+    }
+
+    // if is over delete or done drop start shaking animation
+    let [isOverDropDone, setIsOverDropDone] = React.useState(false);
+    let [isOverDropDelete, setIsOverDropDelete] = React.useState(false);
+    if (isOverDropDone || isOverDropDelete) {
         rootClass.push(cl.Hovering);
     }
 
-    // render
     const finalStyleClass = rootClass.join(' ');
+
+    // render
     return (
         <div>
             {
-                !isDragging &&
-                (<div ref={drag} className={finalStyleClass} onClick={openPin} >
-                    <div className={cl.GroupName}> {pin.groupName} </div>
-                    <div className={cl.LineBreak}/>
-                    <div className={cl.Description}> {pin.description} </div>
-                </div>)
+                !isDragging && (
+                    <div ref={drag} className={finalStyleClass} onClick={openPin} >
+                        <div className={cl.GroupName}> {pin.groupName} </div>
+                        <div className={cl.LineBreak}/>
+                        <div className={cl.Description}> {pin.description} </div>
+                    </div>
+                )
+            }
+            {
+                isDragging && <div className={borderPinStyle.join(' ')}/>
             }
             <PinOpened pin={pin} visible={pinOpened} setVisible={setPinOpened} />
-            <DoneDrop isVisible={isDragging} onDrop={onDoneDropHandler} setIsOver={setIsOverDone}/>
-            <DeleteDrop isVisible={isDragging} onDrop={onDeleteDropHandler} setIsOver={setIsOverDelete} />
+            <DoneDrop isVisible={isDragging} onDrop={onDoneDropHandler} setIsOver={setIsOverDropDone}/>
+            <DeleteDrop isVisible={isDragging} onDrop={onDeleteDropHandler} setIsOver={setIsOverDropDelete} />
             {isDragging && <PinPreview pin={pin} pinStyle={finalStyleClass}/>}
         </div>
     );
