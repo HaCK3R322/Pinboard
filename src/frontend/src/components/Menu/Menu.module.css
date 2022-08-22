@@ -1,0 +1,58 @@
+.WrapperOpen {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: calc(100% - 50px);
+    animation-name: slideIn;
+    animation-iteration-count: 1;
+    animation-duration: 0.3s;
+}
+
+.WrapperClose {
+    position: absolute;
+    bottom: 0;
+    left: -100%;
+    width: 100%;
+    height: calc(100% - 50px);
+    animation-name: slideOut;
+    animation-iteration-count: 1;
+    animation-duration: 0.3s;
+}
+
+.Menu {
+    width: 70%;
+    height: 100%;
+    max-width: 300px;
+    background-color: rgba(0, 191, 255, 0.5);
+
+    display: flex;
+    flex-direction: column;
+
+    border-right: 1px solid black;
+}
+
+.MenuButton {
+    width: 70%;
+    height: 10%;
+    margin: 20px auto;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.9);;
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    0% {
+        transform: translateX(+100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}

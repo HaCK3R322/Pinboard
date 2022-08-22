@@ -1,0 +1,90 @@
+.Pin {
+    background-color: lightgreen;
+
+    margin: 5px;
+    padding: 5px;
+
+    border-radius: 5px;
+
+    text-align: center;
+    vertical-align: center;
+
+    min-height: 100px;
+    max-height: 100px;
+
+    width: fit-content;
+
+    min-width: 100px;
+    max-width: 200px;
+
+    hyphens: auto;
+    overflow-wrap: normal;
+
+    overflow-y: hidden;
+    overflow-x: hidden;
+
+    cursor: pointer;
+
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+
+    border: 1px solid black;
+}
+
+.Done {
+    background-color: gray;
+}
+
+.Hovering {
+    animation-name: shaking;
+    animation-duration: 0.1s;
+    animation-iteration-count: infinite;
+}
+@keyframes shaking {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(2deg); }
+    50% { transform: rotate(0); }
+    75% { transform: rotate(-2deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.PinPreview {
+    opacity: 0.7;
+}
+
+.GroupName {
+    position: static;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20%;
+
+    border-radius: 5px 5px 0 0;
+
+    font-size: small;
+}
+
+.LineBreak {
+    position: static;
+    top: 20%;
+    margin: auto;
+
+    width: 70%;
+    height: 0.5px;
+
+    background-color:  black;
+}
+
+.Description {
+    position: static;
+    top: 20%;
+    left: 0;
+    width: 100%;
+    height: 80%;
+
+    border-radius: 0 0 5px 5px;
+
+    font-size: medium;
+}
