@@ -1,0 +1,17 @@
+.DoneDrop {
+    position: fixed;
+    display: none;
+
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to left, rgba(128,240,128,1), rgba(128,240,128,0));
+    width: 10%;
+    min-width: 75px;
+    right: 0;
+    bottom: 0;
+    height: calc(100% - 50px);
+}
+
+.active {
+    display: flex;
+}
