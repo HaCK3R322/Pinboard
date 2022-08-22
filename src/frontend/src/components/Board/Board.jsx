@@ -2,10 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 
 import cl from './Board.module.css';
 import Pin from "../Pin/Pin";
-import {usePreview} from "react-dnd-preview";
-import DoneDrop from "../Pin/DoneDrop/DoneDrop";
-import DeleteDrop from "../Pin/DeleteDrop/DeleteDrop";
-import {fetchCreate, fetchDelete, fetchGetAll, fetchUpdate} from "../../js/api/pins";
+import {fetchDelete, fetchGetAll, fetchUpdate} from "../../js/api/pins";
 import PinForm from "../Pin/PinForm/PinForm";
 
 
@@ -40,26 +37,15 @@ const Board = ({formVisible, setFormVisible}) => {
     let [pins, setPins] = React.useState([]);
     let [groups, setGroups] = React.useState([]);
 
-    useEffect(() => {
-        setGroups(getGroups(pins));
-    }, [pins]);
-
     React.useEffect(() => {
-        // const pinUpdateTime = 500;
         fetchGetAll()
             .then(response => {
                 return response.json();
             })
             .then(data => {
-                // setPins(data.filter(pin => pin.status !== "done"));
                 setPins(data);
                 setGroups(getGroups(data));
             });
-        // console.log("updatePins will be called every " + pinUpdateTime + " ms");
-        // const interval = setInterval(() => {
-        //     updatePins(pins, setPins);
-        // }, pinUpdateTime);
-        // return () => clearInterval(interval);
     }, []);
 
     function onDeleteHandler(pin) {
@@ -79,6 +65,7 @@ const Board = ({formVisible, setFormVisible}) => {
         // fetching in the PinForm component
     }
 
+
     return(
         <div>
             <div className={cl.Board}>
@@ -87,8 +74,6 @@ const Board = ({formVisible, setFormVisible}) => {
                         {
                             group.map(pin =>
                                 {
-                                    console.log('Draw pin: ' + pin.id);
-                                    console.log(pin);
                                     return <Pin pin={pin} key={getSequence()} onDelete={onDeleteHandler} onDone={onDoneHandler} />
                                 }
                             )

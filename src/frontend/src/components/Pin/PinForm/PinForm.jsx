@@ -14,7 +14,6 @@ function PinForm({visible, setVisible, addPin}) {
     let [description, setDescription] = React.useState('');
 
     function save(newPinGroupName, newPinDescription) {
-        console.log('Save pin: ' + newPinGroupName + ' ' + newPinDescription);
         let pin = {
             groupName: newPinGroupName,
             description: newPinDescription,
@@ -63,7 +62,7 @@ function PinForm({visible, setVisible, addPin}) {
                 </div>
                 <div className={cl.LineBreak} />
                 <div className={cl.FormBottom}>
-                    <input type="text" placeholder="Description" onChange={e => setDescription(e.target.value)} style={{
+                    <textarea placeholder="Description" onChange={e => setDescription(e.target.value)} style={{
                         position: "absolute",
                         top: '5%',
                         left: '50%',
@@ -72,7 +71,7 @@ function PinForm({visible, setVisible, addPin}) {
                         border: '0px solid',
                         backgroundColor: 'lightgreen',
                         height: '80%',
-                        width: '80%',
+                        width: '80%'
                     }}/>
                     <Button variant="primary" className={cl.FormSaveButton} onClick={() => save(groupName, description)} >Save</Button>
                 </div>

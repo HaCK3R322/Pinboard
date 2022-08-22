@@ -6,17 +6,18 @@ import {usePreview} from "react-dnd-preview";
 import {getEmptyImage} from "react-dnd-html5-backend";
 import DoneDrop from "./DoneDrop/DoneDrop";
 import DeleteDrop from "./DeleteDrop/DeleteDrop";
-import {fetchDelete, fetchUpdate} from "../../js/api/pins";
 
-const PinPreview = ({pin}) => {
-    const {display, itemType, item, style} = usePreview()
+const PinPreview = ({pin, pinStyle}) => {
+    const {display, itemType, item, style} = usePreview();
     if (!display) {
-        return null
+        return null;
     }
+
+    let previewStyle = [pinStyle, cl.PinPreview];
 
     return (
         <div style={style} itemType={itemType}>
-            <div className={[cl.Pin, cl.PinPreview].join(' ')} >
+            <div className={previewStyle.join(' ')} >
                 <div className={cl.GroupName}> {pin.groupName} </div>
                 <div className={cl.LineBreak}/>
                 <div className={cl.Description}> {pin.description} </div>
@@ -59,18 +60,28 @@ function Pin({pin, onDelete, onDone}) {
         rootClass.push(cl.Done);
     }
 
+    let [isOverDone, setIsOverDone] = React.useState(false);
+    let [isOverDelete, setIsOverDelete] = React.useState(false);
+    if (isOverDone || isOverDelete) {
+        rootClass.push(cl.Hovering);
+    }
+
     // render
+    const finalStyleClass = rootClass.join(' ');
     return (
         <div>
-            <div ref={drag} className={rootClass.join(' ')} onClick={openPin} >
-                <div className={cl.GroupName}> {pin.groupName} </div>
-                <div className={cl.LineBreak}/>
-                <div className={cl.Description}> {pin.description} </div>
-            </div>
+            {
+                !isDragging &&
+                (<div ref={drag} className={finalStyleClass} onClick={openPin} >
+                    <div className={cl.GroupName}> {pin.groupName} </div>
+                    <div className={cl.LineBreak}/>
+                    <div className={cl.Description}> {pin.description} </div>
+                </div>)
+            }
             <PinOpened pin={pin} visible={pinOpened} setVisible={setPinOpened} />
-            <DoneDrop isVisible={isDragging} onDrop={onDoneDropHandler} />
-            <DeleteDrop isVisible={isDragging} onDrop={onDeleteDropHandler} />
-            <PinPreview pin={pin}/>
+            <DoneDrop isVisible={isDragging} onDrop={onDoneDropHandler} setIsOver={setIsOverDone}/>
+            <DeleteDrop isVisible={isDragging} onDrop={onDeleteDropHandler} setIsOver={setIsOverDelete} />
+            {isDragging && <PinPreview pin={pin} pinStyle={finalStyleClass}/>}
         </div>
     );
 }
