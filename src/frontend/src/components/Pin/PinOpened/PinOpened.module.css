@@ -9,7 +9,7 @@
     top: 0;
     left: 0;
 
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .PinOpened {
@@ -23,9 +23,9 @@
     min-width: 200px;
     min-height: 200px;
 
-    top: 50%;
+    top: 10%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0);
 
     background-color: lightgreen;
 
@@ -82,4 +82,18 @@
 .active {
     display: flex;
     position: fixed;
+}
+
+.RedactButton {
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 0;
+    border: 1px solid black;
+    top: 0;
+    right: 0;
+    position: absolute;
+    background: url("../../../../public/redactPencil.png") no-repeat;
+    background-size: contain;
 }

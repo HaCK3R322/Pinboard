@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "pins")
@@ -22,9 +23,9 @@ public class Pin {
     @Getter @Setter private String description;
     @Getter @Setter private String color;
     @Getter @Setter private Integer authorId;
-    @Getter @Setter private Date dateCreation;
-    @Getter @Setter private Date dateCompletion;
-    @Getter @Setter private Date dateDeadline;
+    @Getter @Setter private Timestamp dateCreation;
+    @Getter @Setter private Timestamp dateCompletion;
+    @Getter @Setter private Timestamp dateDeadline;
     @Getter @Setter private Integer priority;
     @Getter @Setter private String status;
 

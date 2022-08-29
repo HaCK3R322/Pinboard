@@ -95,9 +95,7 @@ public class PinController {
         // get current user id by name from principal
         Integer currentUserId = userRepository.findByUsername(principal.getName()).getId();
 
-        // get all accesses for this pin and check if user has access to it
-        List<Integer> pinUserAccessors = pinService.getAllAccessorsIds(pinToUpdate.getId());
-        if (!pinUserAccessors.contains(currentUserId)) {
+        if (!pinService.hasAccess(pinToUpdate.getId(), currentUserId)) {
             throw new NoAccessException("You (" + principal.getName() + ") don't have access to update this pin");
         }
 

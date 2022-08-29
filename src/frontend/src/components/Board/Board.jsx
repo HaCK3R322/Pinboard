@@ -4,7 +4,23 @@ import cl from './Board.module.css';
 import Pin from "../Pin/Pin";
 import {fetchDelete, fetchGetAll, fetchUpdate} from "../../js/api/pins";
 import PinForm from "../Pin/PinForm/PinForm";
+import {getFormattedDate} from "../../js/util/date";
 
+
+function sortByDateCreation(groups) {
+    for(let i = 0; i < groups.length; i++) {
+        groups[i].sort((a, b) => {
+            return Date.parse(a.dateCreation) - Date.parse(b.dateCreation);
+        } );
+    }
+
+    // sort groups by dateCreation of the first pin in the group
+    groups.sort((a, b) => {
+        return Date.parse(a[0].dateCreation) - Date.parse(b[0].dateCreation);
+    });
+
+    return groups;
+}
 
 function getGroups(pins) {
     let groupNames = []
@@ -24,6 +40,9 @@ function getGroups(pins) {
         });
         groups.push(gPins);
     }
+
+    // sort each group by dateCreation
+    groups = sortByDateCreation(groups);
 
     return groups;
 }
@@ -49,20 +68,30 @@ const Board = ({formVisible, setFormVisible}) => {
     }, []);
 
     function onDeleteHandler(pin) {
-        console.log('Try to delete pin: ' + pin.id);
+        console.log('Trying to delete pin: ' + pin.id);
         setPins(pins.filter(p => p.id !== pin.id));
         let ignored = fetchDelete([pin]);
     }
 
     function onDoneHandler(pin) {
-        console.log('Try to done pin: ' + pin.id);
+        console.log('Trying to done pin: ' + pin.id);
         pin.status = "done";
-        fetchUpdate(pin);
+        pin.dateCompletion = getFormattedDate(new Date());
+        let ignored = fetchUpdate(pin);
     }
 
     function addPin(pin) {
         setPins([...pins, pin]);
         // fetching in the PinForm component
+    }
+
+    function updatePinState(pin) {
+        setPins(pins.map(p => {
+            if(p.id === pin.id) {
+                return pin;
+            }
+            return p;
+        }));
     }
 
 
@@ -74,7 +103,11 @@ const Board = ({formVisible, setFormVisible}) => {
                         {
                             group.map(pin =>
                                 {
-                                    return <Pin pin={pin} key={getSequence()} onDelete={onDeleteHandler} onDone={onDoneHandler} />
+                                    return <Pin pin={pin} key={getSequence()}
+                                                onDelete={onDeleteHandler}
+                                                onDone={onDoneHandler}
+                                                updatePinState={updatePinState}
+                                    />
                                 }
                             )
                         }

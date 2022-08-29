@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import cl from './DoneDrop.module.css';
 
 import { useDrop } from 'react-dnd'
@@ -19,11 +19,9 @@ function DoneDrop({isVisible, onDrop, setIsOver}) {
         })
     }))
 
-    if(isOver) {
-        setIsOver(true);
-    } else {
-        setIsOver(false);
-    }
+    useEffect(() => {
+        setIsOver(isOver);
+    } , [isOver]);
 
     return <div className={rootClass.join(' ')} ref={drop}></div>
 }

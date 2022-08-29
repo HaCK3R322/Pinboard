@@ -1,54 +1,83 @@
 import React from 'react';
 import cl from './PinForm.module.css';
 import {Button} from "react-bootstrap";
-import {fetchCreate} from "../../../js/api/pins.js";
+import {fetchCreate, fetchDelete, fetchGetAll, fetchUpdate} from "../../../js/api/pins.js";
+import {getFormattedDate} from "../../../js/util/date";
+import createMyPinsUniversity from "../../../js/api/createMyPinsUniversity";
 
 
-function PinForm({visible, setVisible, addPin}) {
+function PinForm({visible, setVisible, addPin, pinToEdit, updatePinState}) {
     const rootClasses = [cl.Wrapper];
     if(visible) {
         rootClasses.push(cl.active);
     }
 
-    let [groupName, setGroupName] = React.useState('');
-    let [description, setDescription] = React.useState('');
+    let [groupName, setGroupName] = React.useState(pinToEdit ? pinToEdit.groupName : '');
+    let [description, setDescription] = React.useState(pinToEdit ? pinToEdit.description : '');
 
     function save(newPinGroupName, newPinDescription) {
-        let pin = {
-            groupName: newPinGroupName,
-            description: newPinDescription,
-            color: "color",
-            dateCreation: "2020-01-01",
-            dateCompletion: "2020-01-01",
-            dateDeadline: "2020-01-01",
-            priority: 1,
-            status: "undone"
-        };
+        let isNewPin = pinToEdit === undefined;
 
-        fetchCreate([pin])
-            .then((response) => {
-                if (response.status === 201) {
-                    return response.json();
-                } else {
-                    throw "Something went wrong";
-                }
-            })
-            .then((data) => {
-                console.log("Pin created with id: " + data[0]);
-                pin.id = data[0];
-                addPin(pin);
-                setVisible(false);
-            })
-            .catch((error) => {
-                alert(error);
-            });
+        if(isNewPin) {
+            let currentDate = getFormattedDate(new Date());
+
+            let pin = {
+                groupName: newPinGroupName,
+                description: newPinDescription,
+                dateCreation: currentDate,
+                priority: 1,
+                status: "undone"
+            };
+            console.log(pin);
+
+            fetchCreate([pin])
+                .then((response) => {
+                    if (response.status === 201) {
+                        return response.json();
+                    } else {
+                        throw "Something went wrong";
+                    }
+                })
+                .then((data) => {
+                    console.log("Pin created with id: " + data[0]);
+                    pin.id = data[0];
+                    addPin(pin);
+                    setVisible(false);
+                })
+                .catch((error) => {
+                    alert(error);
+                });
+        } else {
+            let pin = pinToEdit;
+            pin.groupName = newPinGroupName;
+            pin.description = newPinDescription;
+
+            fetchUpdate(pin)
+                .then((response) => {
+                    console.log(response.status);
+                    if (response.status === 200) {
+                        return response.json();
+                    } else {
+                        throw "Something went wrong";
+                    }
+                })
+                .then((data) => {
+                    console.log("Updated pin with id: " + pin.id);
+                    console.log(data);
+                    updatePinState(pin);
+                    setVisible(false);
+                })
+                .catch((error) => {
+                    alert(error);
+                });
+        }
     }
 
     return (
         <div className={rootClasses.join(' ')} onClick={() => setVisible(false)}>
             <div className={cl.Form} onClick={(e) => {e.stopPropagation()}}>
                 <div className={cl.FormTop}>
-                    <input type="text" placeholder="Group" onChange={e => setGroupName(e.target.value)} style={{
+                    <input type="text" placeholder="Group" value={groupName} onChange={e => setGroupName(e.target.value)} style={{
                         position: "absolute",
                         top: '50%',
                         left: '50%',
@@ -62,7 +91,7 @@ function PinForm({visible, setVisible, addPin}) {
                 </div>
                 <div className={cl.LineBreak} />
                 <div className={cl.FormBottom}>
-                    <textarea placeholder="Description" onChange={e => setDescription(e.target.value)} style={{
+                    <textarea placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} style={{
                         position: "absolute",
                         top: '5%',
                         left: '50%',

@@ -40,7 +40,9 @@ const App = () => {
                     formVisible={formVisible}
                     setFormVisible={setFormVisible}
                 />
-                <Menu isVisible={menuVisible} setVisible={setMenuVisible} openForm={() => {setFormVisible(true)}}/>
+                <Menu isVisible={menuVisible} setVisible={setMenuVisible}
+                      openForm={() => {setFormVisible(true)}}
+                />
             </DndProvider>
         </div>
     );

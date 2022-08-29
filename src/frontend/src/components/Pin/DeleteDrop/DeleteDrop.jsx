@@ -19,11 +19,9 @@ function DeleteDrop({isVisible, onDrop, setIsOver}) {
         })
     }))
 
-    if(isOver) {
-        setIsOver(true);
-    } else {
-        setIsOver(false);
-    }
+    useEffect(() => {
+        setIsOver(isOver);
+    } , [isOver]);
 
     return <div className={rootClass.join(' ')} ref={drop}></div>
 }
