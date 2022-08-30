@@ -32,7 +32,6 @@ const LoginForm = () => {
 
 
                     // this need to be replaced on some callback function idk
-
                     setCookie("username", username, 1);
                     setCookie("password", password, 1);
                     window.location.reload();

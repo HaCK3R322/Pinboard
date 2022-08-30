@@ -31,6 +31,9 @@
     user-select: none; /* Standard */
 
     border: 1px solid black;
+
+    content: '\a';
+    white-space: pre-wrap;
 }
 
 .Dragging {

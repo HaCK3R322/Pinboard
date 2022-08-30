@@ -22,7 +22,7 @@ function PinOpened({visible, setVisible, pin, updatePinState}) {
         <div>
             <div className={rootClasses.join(' ')} onClick={closePin}>
                 <div className={cl.PinOpened} onClick={e => {e.stopPropagation()}}>
-                    <div className={cl.GroupName}> {pin.groupName} </div>
+                    <div className={cl.GroupName}> <div className={cl.GroupNameText}>{pin.groupName}</div> </div>
                     <div className={cl.LineBreak}/>
                     <div className={cl.Description}> {pin.description} </div>
                     <button className={cl.RedactButton} onClick={openFormForRedact} />

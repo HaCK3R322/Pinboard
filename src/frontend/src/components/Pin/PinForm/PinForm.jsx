@@ -85,8 +85,10 @@ function PinForm({visible, setVisible, addPin, pinToEdit, updatePinState}) {
                         borderRadius: '5px',
                         border: '0px solid',
                         backgroundColor: 'lightgreen',
-                        height: '80%',
+                        height: '100%',
                         width: '80%',
+                        textAlign: 'center',
+                        fontSize: 'larger',
                     }}/>
                 </div>
                 <div className={cl.LineBreak} />
@@ -99,8 +101,9 @@ function PinForm({visible, setVisible, addPin, pinToEdit, updatePinState}) {
                         borderRadius: '5px',
                         border: '0px solid',
                         backgroundColor: 'lightgreen',
-                        height: '80%',
-                        width: '80%'
+                        height: '85%',
+                        width: '80%',
+                        fontSize: 'x-large',
                     }}/>
                     <Button variant="primary" className={cl.FormSaveButton} onClick={() => save(groupName, description)} >Save</Button>
                 </div>
