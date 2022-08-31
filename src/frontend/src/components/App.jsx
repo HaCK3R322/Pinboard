@@ -1,15 +1,15 @@
 import React, {useCallback} from 'react';
 
-import PinForm from "./Pin/PinForm/PinForm.jsx";
+import cl from './App.module.css';
+
 import Header from "./Header/Header.jsx";
 import Board from "./Board/Board";
+import Menu from "./Menu/Menu";
 
 import {HTML5Backend} from 'react-dnd-html5-backend';
 import {TouchBackend} from 'react-dnd-touch-backend';
 import { DndProvider } from 'react-dnd-multi-backend';
-
 import { TouchTransition, MouseTransition } from 'react-dnd-multi-backend';
-import Menu from "./Menu/Menu";
 const HTML5toTouch = {
     backends: [{
         backend: HTML5Backend,
@@ -35,11 +35,13 @@ const App = () => {
     return (
         <div>
             <DndProvider options={HTML5toTouch}>
-                <Header openMenu={menuClick}/>
+                <div className={cl.headerShift} />
+
                 <Board
                     formVisible={formVisible}
                     setFormVisible={setFormVisible}
                 />
+                <Header openMenu={menuClick}/>
                 <Menu isVisible={menuVisible} setVisible={setMenuVisible}
                       openForm={() => {setFormVisible(true)}}
                 />

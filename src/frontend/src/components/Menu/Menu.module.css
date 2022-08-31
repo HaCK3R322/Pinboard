@@ -1,15 +1,16 @@
 .WrapperOpen {
-    position: absolute;
-    bottom: 0;
+    position: fixed;
+    top: 50px;
     width: 100%;
-    height: calc(100% - 50px);
+    height: 100%;
     animation-name: slideIn;
     animation-iteration-count: 1;
     animation-duration: 0.3s;
 }
 
 .WrapperClose {
-    position: absolute;
+    position: fixed;
+    top: 50px;
     bottom: 0;
     left: -100%;
     width: 100%;
