@@ -4,9 +4,19 @@ import {Button} from "react-bootstrap";
 import {fetchCreate, fetchDelete, fetchGetAll, fetchUpdate} from "../../../js/api/pins.js";
 import {getFormattedDate} from "../../../js/util/date";
 import createMyPinsUniversity from "../../../js/api/createMyPinsUniversity";
+import {Autocomplete, TextareaAutosize, TextField} from "@mui/material";
 
+function extractGroupNames(pins) {
+    let groupNames = []
+    pins.forEach(pin => {
+        if(!groupNames.includes(pin.groupName)) {
+            groupNames.push(pin.groupName);
+        }
+    });
+    return groupNames;
+}
 
-function PinForm({visible, setVisible, addPin, pinToEdit, updatePinState}) {
+function PinForm({visible, setVisible, pins, addPin, pinToEdit, updatePinState}) {
     const rootClasses = [cl.Wrapper];
     if(visible) {
         rootClasses.push(cl.active);
@@ -85,7 +95,7 @@ function PinForm({visible, setVisible, addPin, pinToEdit, updatePinState}) {
                         borderRadius: '5px',
                         border: '0px solid',
                         backgroundColor: 'lightgreen',
-                        height: '100%',
+                        height: '80%',
                         width: '80%',
                         textAlign: 'center',
                         fontSize: 'larger',

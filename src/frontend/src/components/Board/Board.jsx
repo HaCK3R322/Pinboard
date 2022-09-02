@@ -114,7 +114,7 @@ const Board = ({formVisible, setFormVisible}) => {
                     </div>
                 )}
             </div>
-            <PinForm visible={formVisible} setVisible={setFormVisible} addPin={addPin}/>
+            <PinForm visible={formVisible} pins={pins} setVisible={setFormVisible} addPin={addPin}/>
         </div>
     );
 };
