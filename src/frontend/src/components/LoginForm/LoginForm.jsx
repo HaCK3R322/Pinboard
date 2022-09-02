@@ -52,13 +52,13 @@ const LoginForm = () => {
 
     return (
         <div className={cl.LoginDiv}>
-            <h3>Login</h3>
+            <h3>Вход</h3>
             <div className="mb-3">
                 <label>Username</label>
                 <input
                     type="text"
                     className="form-control"
-                    placeholder="Username"
+                    placeholder="сюда никнейм"
                     onChange={(e) => setUsername(e.target.value)}
                 />
             </div>
@@ -67,7 +67,7 @@ const LoginForm = () => {
                 <input
                     type="password"
                     className="form-control"
-                    placeholder="Password"
+                    placeholder="а сюда пароль"
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
