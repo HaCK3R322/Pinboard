@@ -21,7 +21,7 @@ function LogOrApp() {
                         console.log("Successfully logged in by cookies!");
                         setLoggedIn("true");
                     } else {
-                        alert("Something went wrong!");
+                        alert("Что-то пошло не так! С инетом все норм?");
                         setLoggedIn("false");
                     }
                 });
