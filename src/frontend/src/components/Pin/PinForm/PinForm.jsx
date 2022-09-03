@@ -85,6 +85,20 @@ function PinForm({visible, setVisible, pins, addPin, pinToEdit, updatePinState})
         }
     }
 
+    // <input type="text" placeholder="Group" value={groupName} onChange={e => setGroupName(e.target.value)} style={{
+    //     position: "absolute",
+    //     top: '50%',
+    //     left: '50%',
+    //     transform: 'translate(-50%, -50%)',
+    //     borderRadius: '5px',
+    //     border: '0px solid',
+    //     backgroundColor: 'lightgreen',
+    //     height: '80%',
+    //     width: '80%',
+    //     textAlign: 'center',
+    //     fontSize: 'larger',
+    // }}/>
+
     return (
         <div className={rootClasses.join(' ')} onClick={() => setVisible(false)}>
             <div className={cl.Form} onClick={(e) => {e.stopPropagation()}}>
@@ -101,7 +115,7 @@ function PinForm({visible, setVisible, pins, addPin, pinToEdit, updatePinState})
                         description={pinToEdit === undefined ? description : pinToEdit.description}
                         setDescription={setDescription}
                     />
-                    <Button variant="primary" className={cl.FormSaveButton} onClick={() => save(groupName, description)} >Сохранить</Button>
+                    <Button variant="primary" className={cl.FormSaveButton} onClick={() => save(groupName, description)} >Save</Button>
                 </div>
             </div>
         </div>

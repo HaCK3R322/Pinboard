@@ -7,7 +7,7 @@ function Menu({isVisible, setVisible, openForm}) {
     return (
         <div className={wrapperClass} onClick={e => setVisible(false)}>
             <div className={cl.Menu} onClick={e => e.stopPropagation()}>
-                <button className={cl.MenuButton} onClick={() => {openForm(); setVisible(false)}}>Создать новый 'pin'</button>
+                <button className={cl.MenuButton} onClick={() => {openForm(); setVisible(false)}}>Create new pin</button>
             </div>
         </div>
     );

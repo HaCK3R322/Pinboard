@@ -15,11 +15,11 @@ const LoginForm = () => {
         fetchRegister(username, password)
             .then((response) => {
                 if(response.status === 200) {
-                    alert("Теперь можно войти.");
+                    alert("Successfully registered! You can now login.");
                 } else if(response.status === 409) {
-                    alert("Такой пользователь уже существует!");
+                    alert("Username already exists!");
                 } else {
-                    alert("Ошибка!");
+                    alert("Something went wrong!");
                 }
             });
     }
@@ -38,15 +38,15 @@ const LoginForm = () => {
 
 
                 } else if(response.status === 403) {
-                    alert("Неверный пароль!");
+                    alert("Wrong password!");
                 } else if(response.status === 404) {
-                    alert("Пользователя с таким ником не существует! Зарегистрируйтесь.");
+                    alert("Username not found!");
                 } else {
-                    alert("Ошибка!");
+                    alert("Something went wrong!");
                 }
             }).catch((error) => {
                 console.log(error);
-                alert("Проблемы на стороне сервера...");
+                alert("Some server problems...!");
             });
     }
 
@@ -73,13 +73,13 @@ const LoginForm = () => {
             </div>
             <div className="d-grid">
                 <Button type="primary" className="btn btn-primary" id="submitButton" onClick={login}>
-                    Войти
+                    Login
                 </Button>
             </div>
             <br/>
             <div className="d-grid">
                 <Button type="primary" className="btn btn-primary" onClick={register}>
-                    Зарегистрироваться
+                    Register
                 </Button>
             </div>
         </div>
