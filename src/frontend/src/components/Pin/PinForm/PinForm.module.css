@@ -23,7 +23,7 @@
     min-width: 200px;
     min-height: 200px;
 
-    top: 10%;
+    top: max(60px, 10%);
     left: 50%;
     transform: translate(-50%, 0);
 
@@ -36,7 +36,6 @@
 .FormTop {
     position: absolute;
     margin: 0;
-    padding: 20px;
 
     width: 100%;
     height: 15%;
@@ -48,7 +47,7 @@
 
 .LineBreak {
     position: absolute;
-    top: 15%;
+    top: max(70px, 15%);
     left: 50%;
     transform: translate(-50%, -50%);
 
@@ -65,7 +64,7 @@
     width: 100%;
     height: 85%;
 
-    bottom: 0;
+    top: max(15%, 71px);
 
     border-radius: 0 0 10px 10px;
 }
