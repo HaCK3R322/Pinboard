@@ -3,7 +3,7 @@ function getFormattedDate(date) {
     let MM = date.getMonth() + 1; // Months start at 0!
     let dd = date.getDate();
 
-    let HH = date.getHours();
+    let HH = date.getHours() + (date.getTimezoneOffset() / 60);
     let mm = date.getMinutes();
     let ss = date.getSeconds();
     let ms = date.getMilliseconds();

@@ -1,5 +1,6 @@
 package com.androsov.pinboard.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +26,7 @@ public class Pin {
     @Getter @Setter private String description;
     @Getter @Setter private String color;
     @Getter @Setter private Integer authorId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
     @Getter @Setter private Timestamp dateCreation;
     @Getter @Setter private Timestamp dateCompletion;
     @Getter @Setter private Timestamp dateDeadline;
