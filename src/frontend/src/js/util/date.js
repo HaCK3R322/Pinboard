@@ -4,13 +4,13 @@ function getFormattedDate(date) {
     let dd = date.getDate();
 
     let HH = date.getHours() + (date.getTimezoneOffset() / 60);
+    console.log(HH);
     let mm = date.getMinutes();
     let ss = date.getSeconds();
     let ms = date.getMilliseconds();
 
     if (dd < 10) dd = '0' + dd;
     if (MM < 10) MM = '0' + MM;
-    if (HH < 10) HH = '0' + HH;
     if (mm < 10) mm = '0' + mm;
     if (ss < 10) ss = '0' + ss;
 

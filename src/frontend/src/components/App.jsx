@@ -42,8 +42,10 @@ const App = () => {
                     setFormVisible={setFormVisible}
                 />
                 <Header openMenu={menuClick}/>
-                <Menu isVisible={menuVisible} setVisible={setMenuVisible}
-                      openForm={() => {setFormVisible(true)}}
+                <Menu
+                    isVisible={menuVisible}
+                    setVisible={setMenuVisible}
+                    openForm={() => {setFormVisible(true)}}
                 />
             </DndProvider>
         </div>
