@@ -7,6 +7,7 @@ import createMyPinsUniversity from "../../../js/api/createMyPinsUniversity";
 import {Autocomplete, TextareaAutosize, TextField} from "@mui/material";
 import GroupName from "./GroupName/GroupName";
 import Description from "./Description/Description";
+import {getPriorityForNewPin} from "../../../js/util/pins";
 
 function extractGroupNames(pins) {
     let groupNames = []
@@ -37,7 +38,7 @@ function PinForm({visible, setVisible, pins, addPin, pinToEdit, updatePinState})
                 groupName: newPinGroupName,
                 description: newPinDescription,
                 dateCreation: currentDate,
-                priority: 1,
+                priority: getPriorityForNewPin(pins, newPinGroupName),
                 status: "undone"
             };
             console.log(pin);

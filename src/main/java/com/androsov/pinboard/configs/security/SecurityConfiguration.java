@@ -52,7 +52,9 @@ class CsrfTokenResponseHeaderBindingFilter extends OncePerRequestFilter {
 class SimpleCORSFilter extends OncePerRequestFilter {
     private static final String localHost = "http://localhost:3000";
     private static final String remoteHost = "http://ivanandrosovv.ru";
-    protected static final String ALLOWED_ORIGINS = localHost;
+
+    protected static final String ALLOWED_ORIGINS = remoteHost;
+
     protected static final String ALLOWED_METHODS = "GET,POST,PUT,DELETE,OPTIONS,UPDATE";
     protected static final String ALLOWED_HEADERS = "X-Requested-With,Content-Type,Accept,Origin,Authorization,X-CSRF-TOKEN";
     protected static final String ALLOW_CREDENTIALS = "true";

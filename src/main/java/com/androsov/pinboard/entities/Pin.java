@@ -32,7 +32,7 @@ public class Pin {
     @Getter @Setter private Timestamp dateCompletion;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
     @Getter @Setter private Timestamp dateDeadline;
-    @Getter @Setter private Integer priority;
+    @Getter @Setter private String priority;
     @Getter @Setter private String status;
 
     protected Pin() {}

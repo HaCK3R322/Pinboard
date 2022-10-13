@@ -23,7 +23,7 @@ function DoneDrop({isVisible, onDrop, setIsOver}) {
         setIsOver(isOver);
     } , [isOver]);
 
-    return <div className={rootClass.join(' ')} ref={drop}></div>
+    return <div className={rootClass.join(' ')} ref={drop}/>
 }
 
 export default DoneDrop;

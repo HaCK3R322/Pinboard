@@ -1,7 +1,7 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import cl from './Pin.module.css';
 import PinOpened from "./PinOpened/PinOpened";
-import {useDrag} from "react-dnd";
+import {useDrag, useDrop} from "react-dnd";
 import {usePreview} from "react-dnd-preview";
 import {getEmptyImage} from "react-dnd-html5-backend";
 import DoneDrop from "./DoneDrop/DoneDrop";
@@ -34,7 +34,8 @@ function Pin({pin, onDelete, onDone, updatePinState}) {
     }
 
     //// react-dnd draggable ////
-    const [{isDragging}, drag, preview] = useDrag({
+    //////// delete, done
+    const [{isDragging}, dragRef, preview] = useDrag({
         type: 'PIN',
         item: {pin},
         collect: monitor => ({
@@ -87,7 +88,7 @@ function Pin({pin, onDelete, onDone, updatePinState}) {
         <div>
             {
                 !isDragging && (
-                    <div ref={drag} className={finalStyleClass} onClick={openPin} >
+                    <div ref={dragRef} className={finalStyleClass} onClick={openPin} >
                         <div className={cl.GroupName}> {groupName}</div>
                         <div className={cl.LineBreak}/>
                         <div className={cl.Description}> {description} </div>

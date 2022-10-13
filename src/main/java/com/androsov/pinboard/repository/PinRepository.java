@@ -8,31 +8,23 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Transactional
 public interface PinRepository extends CrudRepository<Pin, Integer> {
     // getters
     Pin getPinById(Integer id);
-    List<Pin> getAllByAuthorId(Integer authorId);
-    List<Pin> getAllByColor(String author);
-    List<Pin> getAllByDateCompletion(Date dateCompletion);
-    List<Pin> getAllByDateCreation(Date dateCreation);
-    List<Pin> getAllByDateDeadline(Date dateDeadline);
-    List<Pin> getAllByDescription(String author);
+    List<Pin> getAllByDateDeadline(Timestamp dateDeadline);
     List<Pin> getAllByGroupName(String groupName);
-    List<Pin> getAllByPriority(Integer priority);
     List<Pin> getAllByStatus(String author);
 
     // deleting methods
     void deleteById(Integer id);
     void deleteByAuthorId(Integer authorId);
     void deleteAllByColor(String color);
-    void deleteAllByDateCompletion(Date dateCompletion);
-    void deleteAllByDateCreation(Date dateCreation);
-    void deleteAllByDateDeadline(Date dateDeadline);
-    void deleteAllByDescription(String description);
+    void deleteAllByDateCompletion(Timestamp dateCompletion);
+    void deleteAllByDateDeadline(Timestamp dateDeadline);
     void deleteAllByGroupName(String groupName);
-    void deleteAllByPriority(Integer priority);
     void deleteAllByStatus(String status);
 }

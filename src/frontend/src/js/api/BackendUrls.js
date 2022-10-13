@@ -1,7 +1,7 @@
 const local = "http://localhost:8080"
 const remote = "http://ivanandrosovv.ru:8080"
 
-let currentUrl = local;
+let currentUrl = remote;
 
 const BackendUrls = {
     url: currentUrl,
