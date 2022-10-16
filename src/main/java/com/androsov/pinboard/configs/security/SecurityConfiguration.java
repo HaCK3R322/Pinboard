@@ -58,7 +58,7 @@ class SimpleCORSFilter extends OncePerRequestFilter {
     protected static final String ALLOWED_METHODS = "GET,POST,PUT,DELETE,OPTIONS,UPDATE";
     protected static final String ALLOWED_HEADERS = "X-Requested-With,Content-Type,Accept,Origin,Authorization,X-CSRF-TOKEN";
     protected static final String ALLOW_CREDENTIALS = "true";
-    protected static final String MAX_AGE = "86400";
+    protected static final String MAX_AGE = "604800";
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, javax.servlet.FilterChain filterChain) throws ServletException, IOException {
         response.setHeader("Access-Control-Allow-Origin", ALLOWED_ORIGINS);

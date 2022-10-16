@@ -18,12 +18,14 @@ function eraseCookie(name) {
 // set cookie
 function setCookie(name, value, days) {
     let expires = "";
-    if (days) {
+    if (days !== undefined) {
         let date = new Date();
         date.setTime(date.getTime() + (days*24*60*60*1000));
         expires = "; expires=" + date.toUTCString();
+        document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    } else {
+        document.cookie = name + "=" + (value || "");
     }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
 }
 
 export { getCookie, eraseCookie, setCookie };
