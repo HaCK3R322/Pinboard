@@ -92,6 +92,9 @@ public class SecurityConfiguration {
                     .anyRequest().authenticated()
 
                 .and()
+                .rememberMe()
+                    .key("uniqueAndSecret")
+                .and()
                 .csrf().disable();
 
         http

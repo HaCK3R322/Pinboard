@@ -21,7 +21,7 @@ function setCookie(name, value, days) {
     if (days !== undefined) {
         let date = new Date();
         date.setTime(date.getTime() + (days*24*60*60*1000));
-        expires = "; expires=" + date.toUTCString();
+        expires = "; Expires=" + date.toUTCString();
         document.cookie = name + "=" + (value || "")  + expires + "; path=/";
     } else {
         document.cookie = name + "=" + (value || "");
