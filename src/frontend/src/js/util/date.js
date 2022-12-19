@@ -1,6 +1,6 @@
 function getFormattedDate(date) {
     // add offset
-    date += date.getTimezoneOffset() * 60 * 1000;
+    date = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
 
     const yyyy = date.getFullYear();
     let MM = date.getMonth() + 1; // Months start at 0!
@@ -39,8 +39,6 @@ function getFormattedTimeLeft(deadline) {
 
     if (hours < 10) hours = '0' + hours;
     if (minutes < 10) minutes = '0' + minutes;
-
-    console.log(date + 'T' + hours + ':' + minutes + ':' + seconds);
 
     let dateDeadline = new Date(date + 'T' + hours + ':' + minutes + ':' + seconds);
     dateDeadline -= dateDeadline.getTimezoneOffset() * 60 * 1000;
