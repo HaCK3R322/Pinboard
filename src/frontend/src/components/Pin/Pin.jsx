@@ -6,6 +6,7 @@ import {usePreview} from "react-dnd-preview";
 import {getEmptyImage} from "react-dnd-html5-backend";
 import DoneDrop from "./DoneDrop/DoneDrop";
 import DeleteDrop from "./DeleteDrop/DeleteDrop";
+import {getFormattedTimeLeft} from "../../js/util/date";
 
 const PinPreview = ({pin, pinStyle}) => {
     const {display, itemType, item, style} = usePreview();
@@ -83,6 +84,16 @@ function Pin({pin, onDelete, onDone, updatePinState}) {
     let [groupName, setGroupName] = React.useState(pin.groupName);
     let [description, setDescription] = React.useState(pin.description);
 
+    // deadline time left
+    let [deadline, setDeadline] = React.useState(pin.dateDeadline !== null ? getFormattedTimeLeft(pin.dateDeadline) : null);
+    useEffect(() => {
+        setInterval(() => {
+            if(pin.dateDeadline !== null) {
+                setDeadline(getFormattedTimeLeft(pin.dateDeadline));
+            }
+        }, 1000);
+    }, [])
+
     // render
     return (
         <div>
@@ -91,6 +102,7 @@ function Pin({pin, onDelete, onDone, updatePinState}) {
                     <div ref={dragRef} className={finalStyleClass} onClick={openPin} >
                         <div className={cl.GroupName}> {groupName}</div>
                         <div className={cl.LineBreak}/>
+                        <div className={cl.GroupName}> {deadline} </div>
                         <div className={cl.Description}> {description} </div>
                     </div>
                 )
