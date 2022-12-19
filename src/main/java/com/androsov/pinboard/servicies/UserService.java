@@ -20,7 +20,7 @@ public class UserService {
 
     public User register(User user) {
         // if username not unique throw exception
-        if (userRepository.findByUsername(user.getUsername()) != null) {
+        if (userRepository.findByUsername(user.getUsername().trim()) != null) {
             throw new DataIntegrityViolationException("Username already exists");
         }
 
