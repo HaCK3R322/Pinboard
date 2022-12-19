@@ -9,11 +9,11 @@ function Description({description, setDescription}) {
     useEffect(() => {
         window.onresize = () => {
             if(window.innerHeight < 350) {
-                setRows(3);
+                setRows(1);
             } else if(window.innerHeight < 450) {
-                setRows(4)
+                setRows(2)
             } else {
-                setRows(window.innerHeight * 0.4 / 20 - 1);
+                setRows(window.innerHeight * 0.4 / 20 - 3);
             }
         }
     }, [])
