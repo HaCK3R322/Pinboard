@@ -51,7 +51,11 @@ function Pin({pin, onDelete, onDone, updatePinState}) {
     }
 
     function onDoneDropHandler() {
-        setIsDone(true);
+        if(pin.status === "done") {
+            setIsDone(true);
+        } else {
+            setIsDone(false);
+        }
         onDone(pin);
     }
 
