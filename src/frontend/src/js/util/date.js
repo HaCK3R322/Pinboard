@@ -33,12 +33,12 @@ function getFormattedTimeLeft(deadline) {
     let year = date.split('-')[0];
     let month = date.split('-')[1];
     let day = date.split('-')[2];
-    let hours = parseInt(time.split(':')[0]); // "23"
+    let hours = time.split(':')[0]; // "23"
     let minutes = time.split(':')[1]; // "59"
     let seconds = time.split(':')[2]; //
 
-    if (hours < 10) hours = '0' + hours;
-    if (minutes < 10) minutes = '0' + minutes;
+    if (hours.length < 2) hours = '0' + hours;
+    if (minutes.length < 2) minutes = '0' + minutes;
 
     let dateDeadline = new Date(date + 'T' + hours + ':' + minutes + ':' + seconds);
     dateDeadline -= dateDeadline.getTimezoneOffset() * 60 * 1000;

@@ -76,7 +76,11 @@ function PinForm({visible, setVisible, pins, addPin, pinToEdit, updatePinState})
             pin.groupName = newPinGroupName;
             pin.description = newPinDescription;
             if(newDateDeadline !== null) {
-                pin.dateDeadline = getFormattedDate(newDateDeadline.toDate());
+                try {
+                    pin.dateDeadline = getFormattedDate(newDateDeadline.toDate()); // if we changed, newDateDeadline will be a moment object
+                } catch (e) {
+                    pin.dateDeadline = newDateDeadline; // else it will be a string in a backend TimeStomp format
+                }
             }
 
             fetchUpdate(pin)
