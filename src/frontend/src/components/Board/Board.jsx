@@ -92,9 +92,12 @@ const Board = ({formVisible, setFormVisible}) => {
     }, []);
 
     function onDeleteHandler(pin) {
-        console.log('Trying to delete pin: ' + pin.id);
-        setPins(pins.filter(p => p.id !== pin.id));
-        let ignored = fetchDelete([pin]);
+        // agreement form
+        if(window.confirm('Are you sure you want to delete this pin?')) {
+            console.log('Trying to delete pin: ' + pin.id);
+            setPins(pins.filter(p => p.id !== pin.id));
+            let ignored = fetchDelete([pin]);
+        }
     }
 
     function onDoneHandler(pin) {

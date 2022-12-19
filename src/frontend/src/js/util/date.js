@@ -4,7 +4,6 @@ function getFormattedDate(date) {
     let dd = date.getDate();
 
     let HH = date.getHours() + (date.getTimezoneOffset() / 60);
-    console.log(HH);
     let mm = date.getMinutes();
     let ss = date.getSeconds();
     let ms = date.getMilliseconds();

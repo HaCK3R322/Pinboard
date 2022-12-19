@@ -50,21 +50,17 @@ function Pin({pin, onDelete, onDone, updatePinState}) {
         onDelete(pin);
     }
 
+    let [pinDoneStatus, setPinDoneStatus] = React.useState(pin.status);
     function onDoneDropHandler() {
-        if(pin.status === "done") {
-            setIsDone(true);
-        } else {
-            setIsDone(false);
-        }
-        onDone(pin);
+        onDone(pin); // call parent function that will react on pin dropping to done
+        setPinDoneStatus(pin.status); // change pin status in this component
     }
 
     //// CSS ////
     const rootClass = [cl.Pin];
 
-    // if done change color
-    let [isDone, setIsDone] = React.useState(pin.status === 'done');
-    if (isDone) {
+    // if done -> change color
+    if (pinDoneStatus === 'done') {
         rootClass.push(cl.Done);
     }
 
