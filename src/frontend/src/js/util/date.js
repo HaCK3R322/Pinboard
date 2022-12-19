@@ -1,14 +1,12 @@
 function getFormattedDate(date) {
+    // add offset
+    date += date.getTimezoneOffset() * 60 * 1000;
+
     const yyyy = date.getFullYear();
     let MM = date.getMonth() + 1; // Months start at 0!
     let dd = date.getDate();
 
-    let HH = date.getHours() + (date.getTimezoneOffset() / 60);
-    // if HH is more than 24, we need to add 1 day
-    if(HH > 24) {
-        HH -= 24;
-        dd += 1;
-    }
+    let HH = date.getHours();
     let mm = date.getMinutes();
     let ss = date.getSeconds();
     let ms = date.getMilliseconds();
@@ -31,11 +29,21 @@ function getFormattedTimeLeft(deadline) {
     // deadline parsed time
     let date = deadline.split('T')[0]; // "2000-01-01"
     let time = deadline.split('T')[1].split('.')[0]; // "23:59:59"
-    let hours = parseInt(time.split(':')[0]) - dateNow.getTimezoneOffset() / 60; // "23"
+
+    let year = date.split('-')[0];
+    let month = date.split('-')[1];
+    let day = date.split('-')[2];
+    let hours = parseInt(time.split(':')[0]); // "23"
     let minutes = time.split(':')[1]; // "59"
     let seconds = time.split(':')[2]; //
 
+    if (hours < 10) hours = '0' + hours;
+    if (minutes < 10) minutes = '0' + minutes;
+
+    console.log(date + 'T' + hours + ':' + minutes + ':' + seconds);
+
     let dateDeadline = new Date(date + 'T' + hours + ':' + minutes + ':' + seconds);
+    dateDeadline -= dateDeadline.getTimezoneOffset() * 60 * 1000;
 
     let diff = dateDeadline - dateNow;
 
@@ -48,19 +56,13 @@ function getFormattedTimeLeft(deadline) {
     let timeLeftString = '';
     timeLeftString += daysLeft + 'd ';
 
-    if(hoursLeft < 10) {
-        timeLeftString += '0';
-    }
+    if(hoursLeft < 10) hoursLeft = '0' + hoursLeft;
     timeLeftString += hoursLeft + ':';
 
-    if(minutesLeft < 10) {
-        timeLeftString += '0';
-    }
+    if(minutesLeft < 10) minutesLeft = '0' + minutesLeft;
     timeLeftString += minutesLeft + ':';
 
-    if(secondsLeft < 10) {
-        timeLeftString += '0';
-    }
+    if(secondsLeft < 10) secondsLeft = '0' + secondsLeft;
     timeLeftString += secondsLeft;
 
 

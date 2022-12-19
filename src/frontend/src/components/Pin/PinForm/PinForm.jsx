@@ -8,6 +8,9 @@ import {Autocomplete, TextareaAutosize, TextField} from "@mui/material";
 import GroupName from "./GroupName/GroupName";
 import Description from "./Description/Description";
 import {getPriorityForNewPin} from "../../../js/util/pins";
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 function extractGroupNames(pins) {
     let groupNames = []
@@ -27,17 +30,25 @@ function PinForm({visible, setVisible, pins, addPin, pinToEdit, updatePinState})
 
     let [groupName, setGroupName] = React.useState(pinToEdit ? pinToEdit.groupName : '');
     let [description, setDescription] = React.useState(pinToEdit ? pinToEdit.description : '');
+    let [newDateDeadline, setNewDateDeadline] = React.useState(pinToEdit ? pinToEdit.dateDeadline : null);
 
     function save(newPinGroupName, newPinDescription) {
         let isNewPin = pinToEdit === undefined;
 
         if(isNewPin) {
             let currentDate = getFormattedDate(new Date());
+            let dateDeadLineToWrite = null;
+            if(newDateDeadline !== null) {
+                console.log(newDateDeadline.toDate());
+                console.log(getFormattedDate(newDateDeadline.toDate()));
+                dateDeadLineToWrite = getFormattedDate(newDateDeadline.toDate());
+            }
 
             let pin = {
                 groupName: newPinGroupName,
                 description: newPinDescription,
                 dateCreation: currentDate,
+                dateDeadline: dateDeadLineToWrite,
                 priority: getPriorityForNewPin(pins, newPinGroupName),
                 status: "undone"
             };
@@ -64,6 +75,9 @@ function PinForm({visible, setVisible, pins, addPin, pinToEdit, updatePinState})
             let pin = pinToEdit;
             pin.groupName = newPinGroupName;
             pin.description = newPinDescription;
+            if(newDateDeadline !== null) {
+                pin.dateDeadline = getFormattedDate(newDateDeadline.toDate());
+            }
 
             fetchUpdate(pin)
                 .then((response) => {
@@ -86,19 +100,9 @@ function PinForm({visible, setVisible, pins, addPin, pinToEdit, updatePinState})
         }
     }
 
-    // <input type="text" placeholder="Group" value={groupName} onChange={e => setGroupName(e.target.value)} style={{
-    //     position: "absolute",
-    //     top: '50%',
-    //     left: '50%',
-    //     transform: 'translate(-50%, -50%)',
-    //     borderRadius: '5px',
-    //     border: '0px solid',
-    //     backgroundColor: 'lightgreen',
-    //     height: '80%',
-    //     width: '80%',
-    //     textAlign: 'center',
-    //     fontSize: 'larger',
-    // }}/>
+    function handleDateDeadlineChange(someNewDate) {
+        setNewDateDeadline(someNewDate);
+    }
 
     return (
         <div className={rootClasses.join(' ')} onClick={() => setVisible(false)}>
@@ -118,6 +122,21 @@ function PinForm({visible, setVisible, pins, addPin, pinToEdit, updatePinState})
                     />
                     <Button variant="primary" className={cl.FormSaveButton} onClick={() => save(groupName, description)} >Save</Button>
                 </div>
+                <LocalizationProvider dateAdapter={AdapterMoment}>
+                    <div style={{
+                        position: "absolute",
+                        bottom: "10px",
+                        left: "50%",
+                        transform: 'translateX(-50%)',
+                    }}>
+                        <DateTimePicker
+                            label="Дедлайн"
+                            value={newDateDeadline}
+                            onChange={handleDateDeadlineChange}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
+                    </div>
+                </LocalizationProvider>
             </div>
         </div>
     );
