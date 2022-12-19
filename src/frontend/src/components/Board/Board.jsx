@@ -99,8 +99,15 @@ const Board = ({formVisible, setFormVisible}) => {
 
     function onDoneHandler(pin) {
         console.log('Trying to done pin: ' + pin.id);
-        pin.status = "done";
-        pin.dateCompletion = getFormattedDate(new Date());
+
+        if(pin.status === "done") {
+            pin.status = "undone";
+            pin.dateCompletion = null;
+        } else {
+            pin.status = "done";
+            pin.dateCompletion = getFormattedDate(new Date());
+        }
+
         let ignored = fetchUpdate(pin);
     }
 
