@@ -8,7 +8,7 @@ import DoneDrop from "./DoneDrop/DoneDrop";
 import DeleteDrop from "./DeleteDrop/DeleteDrop";
 import {getFormattedTimeLeft} from "../../js/util/date";
 
-const PinPreview = ({pin, pinStyle}) => {
+const PinPreview = ({pin, pinStyle, timeLeftStomp}) => {
     const {display, itemType, item, style} = usePreview();
     if (!display) {
         return null;
@@ -19,8 +19,8 @@ const PinPreview = ({pin, pinStyle}) => {
     return (
         <div style={style} itemType={itemType}>
             <div className={previewStyle.join(' ')} >
-                <div className={cl.GroupName}> {pin.groupName} </div>
-                <div className={cl.LineBreak}/>
+                <div className={cl.GroupName}> {pin.groupName}</div>
+                {(timeLeftStomp !== null) ? <div className={cl.Deadline}> {timeLeftStomp} </div> : <div className={cl.LineBreak}/>}
                 <div className={cl.Description}> {pin.description} </div>
             </div>
         </div>
@@ -101,8 +101,7 @@ function Pin({pin, onDelete, onDone, updatePinState}) {
                 !isDragging && (
                     <div ref={dragRef} className={finalStyleClass} onClick={openPin} >
                         <div className={cl.GroupName}> {groupName}</div>
-                        <div className={cl.LineBreak}/>
-                        {(deadline !== null) ? <div className={cl.Deadline}> {deadline} </div> : null}
+                        {(deadline !== null) ? <div className={cl.Deadline}> {deadline} </div> : <div className={cl.LineBreak}/>}
                         <div className={cl.Description}> {description} </div>
                     </div>
                 )
@@ -111,7 +110,7 @@ function Pin({pin, onDelete, onDone, updatePinState}) {
             <PinOpened pin={pin} visible={pinOpened} setVisible={setPinOpened} updatePinState={updatePinState} />
             <DoneDrop isVisible={isDragging} onDrop={onDoneDropHandler} setIsOver={setIsOverDropDone}/>
             <DeleteDrop isVisible={isDragging} onDrop={onDeleteDropHandler} setIsOver={setIsOverDropDelete} />
-            {isDragging && <PinPreview pin={pin} pinStyle={finalStyleClass}/>}
+            {isDragging && <PinPreview pin={pin} pinStyle={finalStyleClass} timeLeftStomp={deadline}/>}
         </div>
     );
 }
