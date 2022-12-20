@@ -118,6 +118,18 @@
     background-color:  black;
 }
 
+.Deadline {
+    position: static;
+    height: 20%;
+
+    margin: auto;
+    min-width: 90px;
+    width: 75%;
+
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
 .Description {
     position: static;
     top: 20%;

@@ -102,7 +102,7 @@ function Pin({pin, onDelete, onDone, updatePinState}) {
                     <div ref={dragRef} className={finalStyleClass} onClick={openPin} >
                         <div className={cl.GroupName}> {groupName}</div>
                         <div className={cl.LineBreak}/>
-                        <div className={cl.GroupName}> {deadline} </div>
+                        {(deadline !== null) ? <div className={cl.Deadline}> {deadline} </div> : null}
                         <div className={cl.Description}> {description} </div>
                     </div>
                 )
