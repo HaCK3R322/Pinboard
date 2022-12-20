@@ -5,6 +5,7 @@ import Pin from "../Pin/Pin";
 import {fetchDelete, fetchGetAll, fetchUpdate} from "../../js/api/pins";
 import PinForm from "../Pin/PinForm/PinForm";
 import {getFormattedDate} from "../../js/util/date";
+import {useDrop} from "react-dnd";
 
 
 function sortByDateCreation(groups) {
@@ -77,6 +78,22 @@ const getSequence = () => {
 }
 
 const Board = ({formVisible, setFormVisible}) => {
+    //////////// only needs to fix after-dragging delay
+    const [_, bodyDropRef] = useDrop(() => ({
+        accept: 'PIN',
+        drop: () => {
+            // do something
+        }
+    }));
+
+    useEffect(() => {
+        bodyDropRef(document.body);
+        return () => {
+            bodyDropRef(null);
+        };
+    }, []);
+    ///////////////////////////////////////////////////
+
     let [pins, setPins] = React.useState([]);
     let [groups, setGroups] = React.useState([]);
 
