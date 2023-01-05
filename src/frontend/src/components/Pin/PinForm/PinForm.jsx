@@ -75,12 +75,15 @@ function PinForm({visible, setVisible, pins, addPin, pinToEdit, updatePinState})
             let pin = pinToEdit;
             pin.groupName = newPinGroupName;
             pin.description = newPinDescription;
+            //TODO: мб сделать покрасивше, пока лень париться
             if(newDateDeadline !== null) {
                 try {
                     pin.dateDeadline = getFormattedDate(newDateDeadline.toDate()); // if we changed, newDateDeadline will be a moment object
                 } catch (e) {
                     pin.dateDeadline = newDateDeadline; // else it will be a string in a backend TimeStomp format
                 }
+            } else {
+                pin.dateDeadline = null;
             }
 
             fetchUpdate(pin)
@@ -102,10 +105,6 @@ function PinForm({visible, setVisible, pins, addPin, pinToEdit, updatePinState})
                     alert(error);
                 });
         }
-    }
-
-    function handleDateDeadlineChange(someNewDate) {
-        setNewDateDeadline(someNewDate);
     }
 
     return (
@@ -136,8 +135,15 @@ function PinForm({visible, setVisible, pins, addPin, pinToEdit, updatePinState})
                         <DateTimePicker
                             label="Дедлайн"
                             value={newDateDeadline}
-                            onChange={handleDateDeadlineChange}
+                            onChange={(newValue) => {
+                                setNewDateDeadline(newValue);
+                            }}
                             renderInput={(params) => <TextField {...params} />}
+                            componentsProps={{
+                                actionBar: {
+                                    actions: ['clear'],
+                                },
+                            }}
                         />
                     </div>
                 </LocalizationProvider>
