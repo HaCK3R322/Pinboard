@@ -72,4 +72,8 @@ function getFormattedTimeLeft(deadline) {
     return timeLeftString;
 }
 
-export { getFormattedDate, getFormattedTimeLeft };
+function getFormattedDeadline(deadline) {
+    return new Date(deadline).toLocaleString();
+}
+
+export { getFormattedDate, getFormattedTimeLeft, getFormattedDeadline };

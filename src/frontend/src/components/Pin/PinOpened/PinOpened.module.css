@@ -53,6 +53,18 @@
     transform: translate(-50%, -50%);
 }
 
+.Deadline {
+    position: absolute;
+    bottom: 5%;
+    left: 0;
+    width: 100%;
+
+    border-radius: 0 0 5px 5px;
+
+    font-size: larger;
+    text-align: center;
+}
+
 .LineBreak {
     position: absolute;
     top: 15%;
@@ -72,7 +84,7 @@
     transform: translate(-50%, 0);
     width: 80%;
     margin: auto;
-    height: 84%;
+    height: 75%;
 
     border-radius: 0 0 5px 5px;
 
