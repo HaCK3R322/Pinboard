@@ -1,7 +1,7 @@
 import React from 'react';
-import cl from './PinForm.module.css';
+import cl from './NewPinForm.module.css';
 import {Button} from "react-bootstrap";
-import {fetchCreate, fetchDelete, fetchGetAll, fetchUpdate} from "../../../js/api/pins.js";
+import {fetchCreate, fetchDelete, fetchGetAll, fetchUpdatePin} from "../../../js/api/pins.js";
 import {getFormattedDate} from "../../../js/util/date";
 import createMyPinsUniversity from "../../../js/api/createMyPinsUniversity";
 import {Autocomplete, TextareaAutosize, TextField} from "@mui/material";
@@ -22,7 +22,7 @@ function extractGroupNames(pins) {
     return groupNames;
 }
 
-function PinForm({visible, setVisible, pins, addPin, pinToEdit, updatePinState}) {
+function NewPinForm({visible, setVisible, pins, addPin: addPinToState, pinToEdit, updatePinState}) {
     const rootClasses = [cl.Wrapper];
     if(visible) {
         rootClasses.push(cl.active);
@@ -65,7 +65,7 @@ function PinForm({visible, setVisible, pins, addPin, pinToEdit, updatePinState})
                 .then((data) => {
                     console.log("Pin created with id: " + data[0]);
                     pin.id = data[0];
-                    addPin(pin);
+                    addPinToState(pin);
                     setVisible(false);
                 })
                 .catch((error) => {
@@ -86,7 +86,7 @@ function PinForm({visible, setVisible, pins, addPin, pinToEdit, updatePinState})
                 pin.dateDeadline = null;
             }
 
-            fetchUpdate(pin)
+            fetchUpdatePin(pin)
                 .then((response) => {
                     console.log(response.status);
                     if (response.status === 200) {
@@ -152,4 +152,4 @@ function PinForm({visible, setVisible, pins, addPin, pinToEdit, updatePinState})
     );
 }
 
-export default PinForm;
+export default NewPinForm;

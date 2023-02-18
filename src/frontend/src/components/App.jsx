@@ -26,7 +26,8 @@ const HTML5toTouch = {
 };
 
 const App = () => {
-    let [formVisible, setFormVisible] = React.useState(false);
+    let [newPinFormVisible, setNewPinFormVisible] = React.useState(false);
+    let [pinsOrderFormVisible, setPinsOrderFormVisible] = React.useState(false)
     let [menuVisible, setMenuVisible] = React.useState(false);
     const menuClick = () => {
         setMenuVisible(!menuVisible);
@@ -38,14 +39,18 @@ const App = () => {
                 <div className={cl.headerShift} />
 
                 <Board
-                    formVisible={formVisible}
-                    setFormVisible={setFormVisible}
+                    newPinFormVisible={newPinFormVisible}
+                    setNewPinFormVisible={setNewPinFormVisible}
+
+                    pinsOrderFormVisible={pinsOrderFormVisible}
+                    setPinsOrderFormVisible={setPinsOrderFormVisible}
                 />
                 <Header openMenu={menuClick}/>
                 <Menu
                     isVisible={menuVisible}
                     setVisible={setMenuVisible}
-                    openForm={() => {setFormVisible(true)}}
+                    openNewPinForm={() => {setNewPinFormVisible(true)}}
+                    openPinsOrderForm={() => setPinsOrderFormVisible(true)}
                 />
             </DndProvider>
         </div>

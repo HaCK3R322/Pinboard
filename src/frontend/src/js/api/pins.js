@@ -32,7 +32,8 @@ function fetchDelete(pinsToDelete) {
     });
 }
 
-function fetchUpdate(pin) {
+// TODO: rename to fetchUpdatePin
+function fetchUpdatePin(pin) {
     return fetch(BackendUrls.update, {
         method: 'PUT',
         mode: 'cors',
@@ -44,4 +45,11 @@ function fetchUpdate(pin) {
     });
 }
 
-export {fetchCreate, fetchGetAll, fetchDelete, fetchUpdate}
+
+function  fetchUpdatePins(pins) {
+    for (let pin in pins) {
+        let ignored = fetchUpdatePin(pin);
+    }
+}
+
+export {fetchCreate, fetchGetAll, fetchDelete, fetchUpdatePin, fetchUpdatePins}

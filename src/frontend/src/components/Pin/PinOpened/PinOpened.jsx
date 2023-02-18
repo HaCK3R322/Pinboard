@@ -1,6 +1,6 @@
 import React from "react";
 import cl from "./PinOpened.module.css";
-import PinForm from "../PinForm/PinForm";
+import NewPinForm from "../PinForm/NewPinForm";
 import {getFormattedDeadline} from "../../../js/util/date";
 
 
@@ -31,7 +31,7 @@ function PinOpened({visible, setVisible, pin, updatePinState}) {
                     <button className={cl.RedactButton} onClick={openFormForRedact} />
                 </div>
             </div>
-            {isRedacting && <PinForm visible={isRedacting} setVisible={setIsRedacting} pinToEdit={pin} updatePinState={updatePinState}/>}
+            {isRedacting && <NewPinForm visible={isRedacting} setVisible={setIsRedacting} pinToEdit={pin} updatePinState={updatePinState}/>}
         </div>
     )
 }

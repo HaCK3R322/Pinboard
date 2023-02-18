@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import cl from "../PinForm.module.css";
+import cl from "../NewPinForm.module.css";
 import {makeStyles, TextField} from "@mui/material";
 
 function Description({description, setDescription}) {
