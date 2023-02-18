@@ -4,7 +4,7 @@ import {fetchUpdatePins} from "../../../js/api/pins";
 const PinOrderForm = ({pins, setPinsState}) => {
     return (
         <div>
-lololo
+
         </div>
     );
 };
