@@ -32,7 +32,7 @@ function fetchDelete(pinsToDelete) {
     });
 }
 
-// TODO: rename to fetchUpdatePin
+
 function fetchUpdatePin(pin) {
     return fetch(BackendUrls.update, {
         method: 'PUT',

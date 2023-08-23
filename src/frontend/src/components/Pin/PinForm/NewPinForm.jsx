@@ -22,7 +22,7 @@ function extractGroupNames(pins) {
     return groupNames;
 }
 
-function NewPinForm({visible, setVisible, pins, addPin: addPinToState, pinToEdit, updatePinState}) {
+function NewPinForm({visible, setVisible, pins, addPinToState, pinToEdit, updatePinState}) {
     const rootClasses = [cl.Wrapper];
     if(visible) {
         rootClasses.push(cl.active);
